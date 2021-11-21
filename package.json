@@ -1,0 +1,22 @@
+{
+  "name": "van-art",
+  "version": "1.0.0",
+  "description": "van-art",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/23alyssa/van-art.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/23alyssa/van-art/issues"
+  },
+  "homepage": "https://github.com/23alyssa/van-art#readme",
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  }
+}
