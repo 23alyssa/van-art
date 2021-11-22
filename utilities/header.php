@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <title>Vancouver Art</title>
@@ -32,7 +34,7 @@
                 <input type="search" class="form-control" placeholder="Search" aria-label="Search"/>
                 <button class="btn" type="button" data-mdb-ripple-color="dark"><i class="fas fa-search"></i></button>
                 <div class="p-2">
-                    <button class="btn btn-secondary" type="button">Login</button>
+                    <button class="btn btn-secondary-outline" type="button">Login</button>
                     <button class="btn btn-primary" type="button">Sign Up</button>
                 </div>
             </form>
