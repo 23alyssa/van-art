@@ -14,7 +14,7 @@ function form_start() {
 function form_check($label,$varname,$options,$texts, $get) {
     global $$varname;
 	echo "<div class=\"form-group mt-4\">";
-    echo"<label for=\"$varname\"><h4>$label</h4></label><div>";
+    echo"<label for=\"$varname\">$label</label><div>";
     
     $i = 0;
     foreach($options as $opt) 
@@ -76,10 +76,32 @@ function form_end() {
     echo "</div>";
 	echo "<div class=\"form-group mt-4\">"; 
     echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-search\" value=\"Search Orders\">";
-    echo "</div>";
+    echo "</div></div></div>";
     echo "</form>";
 }
 
+?>
+
+<?php function createCard(array $row) { ?>
+    <div class="col-4">
+        <div class="card">
+        <a href="#">
+            <img height="250"
+                 width="250"
+                 class="card-img-top2"
+                 src="<?= $row['PhotoURL'] ?>">
+            <div class="card-body">
+                <h5 class="card-title"><?= $row["RegistryID"] ?></h5>
+                <p class="card-text">Price : <?= $row["YearOfInstallation"] ?></p>
+                <p class="card-text"><?= $row["SUBSTRING(public_art.DescriptionOfwork,1,70)"]?>...</p>
+                <a href="#!" class="card-link">Read More</a>
+            </div>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+
+<?php
 // <!-- carosel -->
 // this function opens the tag for the form
 // function make_query($connect) {

@@ -10,6 +10,7 @@ if (!empty($_GET['submit-search'])) {
     // get and initialize the varables from the form once submitted
     if( isset($_GET['neighbourhood'])) $neighbourhood=$_GET['neighbourhood']; 
     if( isset($_GET['type'])) $type=$_GET['type']; 
+    if( isset($_GET['year'])) $year=$_GET['year']; 
   
 }
 
@@ -36,9 +37,9 @@ require('utilities/functions.php');
 
 //POPULATE FILTER CONTENT ---------------------------------------
 
-// Neighbourhood:
+// Neighbourhood: ------
     // populate the dropdown with all the neighbourhoods for users to pick from 
-    $neighbourhoodQuery = "SELECT DISTINCT public_art.Neighbourhood FROM public_art ORDER BY `Neighbourhood`";
+    $neighbourhoodQuery = "SELECT DISTINCT public_art.Neighbourhood FROM public_art WHERE public_art.Neighbourhood IS NOT NULL ORDER BY `Neighbourhood`";
     $neighbourhoodQueryResult = mysqli_query($connection, $neighbourhoodQuery);
 
     //make a new array to hold the value from the query to use in the form_dropdown function
@@ -57,9 +58,9 @@ require('utilities/functions.php');
         $neighbourhood = "";
     } 
 
-// Type:
+// Type:-----
     // populate the dropdown with all the types for users to pick from 
-    $typeQuery = "SELECT DISTINCT public_art.Type FROM public_art ORDER BY `Type`";
+    $typeQuery = "SELECT DISTINCT public_art.Type FROM public_art  WHERE public_art.Type IS NOT NULL ORDER BY `Type`";
     $typeQueryResult = mysqli_query($connection, $typeQuery);
 
     //make a new array to hold the value from the query to use in the form_dropdown function
@@ -78,7 +79,7 @@ require('utilities/functions.php');
         $type = "";
     } 
 
-//Year Of Installation:
+//Year Of Installation: -----
     // populate the dropdown with all the types for users to pick from 
     $yearQuery = "SELECT DISTINCT public_art.YearOfInstallation FROM public_art ORDER BY `YearOfInstallation` DESC";
     $yearQueryResult = mysqli_query($connection, $yearQuery);
@@ -99,6 +100,24 @@ require('utilities/functions.php');
         $year = "";
     } 
 
+//Card Information: -----
+    // populate the dropdown with all the types for users to pick from 
+    $cardQuery = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art LIMIT 25";
+    $cardQueryResult = mysqli_query($connection, $cardQuery);
+
+    //make a new array to hold the value from the query to use in the form_dropdown function
+    $card = array();
+
+    //loop through the results and populate the new array to hold the values for dropdown
+    if ($cardQueryResult != NULL) {
+        while ($row = mysqli_fetch_assoc($cardQueryResult)) {
+        $cardOpts['RegistryID'] = $row['RegistryID'];
+        $cardOpts['PhotoURL'] = $row['PhotoURL'];
+        $cardOpts['YearOfInstallation'] = $row['YearOfInstallation'];
+        $cardOpts['SUBSTRING(public_art.DescriptionOfwork,1,70)'] = $row['SUBSTRING(public_art.DescriptionOfwork,1,70)'];
+        }    
+    }
+
 ?>
 
 
@@ -108,25 +127,20 @@ require('utilities/functions.php');
             <h3>Filters:</h3>
             <form class='form-group' action='dbquery.php' method='get'>
                 <?php  
+                    // display and populate the filters from the stored array queries 
                     form_start(); 
-                    // form_check('Neighbourhood','neighbourhood[]',$neighbourhoodValues,$neighbourhoodTexts, $neighbourhood);
-
-                    // display and populate the dropdown for order numbers from the stored array
-                    form_dropdown('Neighbourhood: ', 'neighbourhood', $neighbourhoodOpts, $neighbourhoodOpts, $neighbourhood);
-
-                    form_dropdown('Type: ', 'type', $typeOpts, $typeOpts, $type);
-
                     form_dropdown('Year Install: ', 'year', $yearOpts, $yearOpts, $year);
-
+                    form_check('Type:','type[]', $typeOpts, $typeOpts, $type);
+                    form_check('Neighbourhood: ', 'neighbourhood', $neighbourhoodOpts, $neighbourhoodOpts, $neighbourhood);
                     form_end();
-                
-                
                 ?>
         </sidebar>
         <div class="col-9"> 
-            <h1>Cards</h1>
-            <h1>Cards</h1>
-            <h1>Cards</h1>
+            <?php
+            print_r($cardOpts);
+            createCard($cardOpts);
+
+            ?>
         </div>
     </div>
 </section>
