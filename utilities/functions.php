@@ -84,8 +84,9 @@ function form_end() {
 
 <?php function createCard(array $row) { ?>
     <!-- <div class="col-4"> -->
+
         <div class="card col-sm-8 col-md-5 col-lg-4 col-xl-3 m-1">
-        <a class="text-decoration-none" href="#">
+        <a class="text-decoration-none" <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> >
             <img height="250"
                  width="250"
                  class="card-img-top2"
@@ -106,9 +107,9 @@ function form_end() {
             >
             <div class="card-body">
                 <h5 class="text-body card-title"><?= $row[0] ?></h5>
-                <p class="text-body line-height-card card-text">Price : <?= $row[2] ?></p>
+                <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
                 <p class="text-body card-text"><?= $row[3]?>...</p>
-                <a href="#!" class="card-link">Read More</a>
+                <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
             </div>
             </a>
         </div>
