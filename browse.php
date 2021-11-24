@@ -159,14 +159,11 @@ require('utilities/functions.php');
             </sidebar>
             <div class="col-9"> 
                 <div class="row">
-                        <?php
+                    <?php
                         foreach($cardOpts as $card) {
                             createCard($card);
                         }
-                        // paging($page, $number_of_page);
-                    
-                        ?>
-                    <!-- </div> -->
+                    ?>
                 </div>
             </div>
         </div>
