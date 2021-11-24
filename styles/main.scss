@@ -4,10 +4,13 @@
 // Include any default variable overrides here (though functions won't be available)
 
 // scss-docs-start theme-color-variables
+
 $primary:       #2374AB;
 $secondary:     #ABA6A2;
 $light:         #FBF8F7;
 $dark:          #2F2E2C;
+$alt: #E7E3E2;
+$card-bg: #FBF8F7;
 
 
 // scss-docs-start font-variables
@@ -27,4 +30,16 @@ $line-height-base: 2;
     width: 100%;
     height: 10vw;
     object-fit: cover;
+}
+
+.line-height-card {
+    line-height: 1;
+}
+
+.bg-alt {
+    background-color: #E7E3E2;
+}
+
+.card {
+    border: none;
 }

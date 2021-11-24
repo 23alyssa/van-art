@@ -83,23 +83,82 @@ function form_end() {
 ?>
 
 <?php function createCard(array $row) { ?>
-    <div class="col-4">
-        <div class="card">
-        <a href="#">
+    <!-- <div class="col-4"> -->
+        <div class="card col-sm-8 col-md-5 col-lg-4 col-xl-3 m-1">
+        <a class="text-decoration-none" href="#">
             <img height="250"
                  width="250"
                  class="card-img-top2"
-                 src="<?= $row['PhotoURL'] ?>">
+                 
+                 <?php 
+                 echo "src=\"";
+                 $i = 0;
+                while ($i < count($row)) {
+                    if($row[1] == ""){
+                        echo "assets/no-image.png\"";
+                    } else if($row[1] != "") {
+                        echo $row[1];
+                        echo "\"";
+                    }
+                    $i++;
+                }
+                 ?>
+            >
             <div class="card-body">
-                <h5 class="card-title"><?= $row["RegistryID"] ?></h5>
-                <p class="card-text">Price : <?= $row["YearOfInstallation"] ?></p>
-                <p class="card-text"><?= $row["SUBSTRING(public_art.DescriptionOfwork,1,70)"]?>...</p>
+                <h5 class="text-body card-title"><?= $row[0] ?></h5>
+                <p class="text-body line-height-card card-text">Price : <?= $row[2] ?></p>
+                <p class="text-body card-text"><?= $row[3]?>...</p>
                 <a href="#!" class="card-link">Read More</a>
             </div>
             </a>
         </div>
-    </div>
+    <!-- </div> -->
 <?php } ?>
+
+
+<?php 
+
+function paging($query){
+
+    //define total number of results you want per page  
+    $results_per_page = 25;  
+  
+    //find the total number of results stored in the database  
+    // $query = "select *from alphabet";  
+    $result = mysqli_query($connection, $query);  
+    $number_of_result = mysqli_num_rows($result);  
+  
+    //determine the total number of pages available  
+    $number_of_page = ceil ($number_of_result / $results_per_page);  
+  
+    //determine which page number visitor is currently on  
+    if (!isset ($_GET['page']) ) {  
+        $page = 1;  
+    } else {  
+        $page = $_GET['page'];  
+    }  
+  
+    //determine the sql LIMIT starting number for the results on the displaying page  
+    $page_first_result = ($page-1) * $results_per_page;  
+  
+    //retrieve the selected results from database   
+    $query = "SELECT *FROM alphabet LIMIT " . $page_first_result . ',' . $results_per_page;  
+    $result = mysqli_query($connection, $query);  
+      
+    //display the retrieved result on the webpage  
+    while ($row = mysqli_fetch_array($result)) {  
+        echo $row['id'] . ' ' . $row['alphabet'] . '</br>';  
+    }  
+  
+  
+    //display the link of the pages in URL  
+    for($page = 1; $page<= $number_of_page; $page++) {  
+        echo '<a href = "browse.php?page=' . $page . '">' . $page . ' </a>';  
+    }  
+
+}
+
+?>
 
 <?php
 // <!-- carosel -->

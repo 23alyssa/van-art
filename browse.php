@@ -106,44 +106,61 @@ require('utilities/functions.php');
     $cardQueryResult = mysqli_query($connection, $cardQuery);
 
     //make a new array to hold the value from the query to use in the form_dropdown function
-    $card = array();
+    // $card = array();
+    // $cardOpts = [ "RegistryID" => "", "PhotoURL" => "", "YearOfInstallation" => "", "SUBSTRING(public_art.DescriptionOfwork,1,70)" => ""];
+    $cardOpts = [];
 
     //loop through the results and populate the new array to hold the values for dropdown
     if ($cardQueryResult != NULL) {
         while ($row = mysqli_fetch_assoc($cardQueryResult)) {
-        $cardOpts['RegistryID'] = $row['RegistryID'];
-        $cardOpts['PhotoURL'] = $row['PhotoURL'];
-        $cardOpts['YearOfInstallation'] = $row['YearOfInstallation'];
-        $cardOpts['SUBSTRING(public_art.DescriptionOfwork,1,70)'] = $row['SUBSTRING(public_art.DescriptionOfwork,1,70)'];
+            $cardOpts[] = [$row['RegistryID'],$row['PhotoURL'],$row['YearOfInstallation'], $row['SUBSTRING(public_art.DescriptionOfwork,1,70)']];
+        
+        // $cardOpts['RegistryID'] = $row['RegistryID'];
+        // $cardOpts['PhotoURL'] = $row['PhotoURL'];
+        // $cardOpts['YearOfInstallation'] = $row['YearOfInstallation'];
+        // $cardOpts['SUBSTRING(public_art.DescriptionOfwork,1,70)'] = $row['SUBSTRING(public_art.DescriptionOfwork,1,70)'];
         }    
     }
 
 ?>
 
-
-<section class="container">
-    <div class="row pt-5">
-        <sidebar class="col-3">
-            <h3>Filters:</h3>
-            <form class='form-group' action='dbquery.php' method='get'>
-                <?php  
-                    // display and populate the filters from the stored array queries 
-                    form_start(); 
-                    form_dropdown('Year Install: ', 'year', $yearOpts, $yearOpts, $year);
-                    form_check('Type:','type[]', $typeOpts, $typeOpts, $type);
-                    form_check('Neighbourhood: ', 'neighbourhood', $neighbourhoodOpts, $neighbourhoodOpts, $neighbourhood);
-                    form_end();
-                ?>
-        </sidebar>
-        <div class="col-9"> 
-            <?php
-            print_r($cardOpts);
-            createCard($cardOpts);
-
-            ?>
+<section class="container-fluid bg-alt">
+    <div class="container">
+        <div class="row pt-5">
+            <sidebar class="col-3">
+                <h3>Filters:</h3>
+                <form class='form-group' action='dbquery.php' method='get'>
+                    <?php  
+                        // display and populate the filters from the stored array queries 
+                        form_start(); 
+                        form_dropdown('Year Install: ', 'year', $yearOpts, $yearOpts, $year);
+                        form_check('Type:','type[]', $typeOpts, $typeOpts, $type);
+                        form_check('Neighbourhood: ', 'neighbourhood', $neighbourhoodOpts, $neighbourhoodOpts, $neighbourhood);
+                        form_end();
+                    ?>
+            </sidebar>
+            <div class="col-9"> 
+                <div class="row">
+                    <!-- <div class="card-columns"> -->
+                        <?php
+                        // echo "<pre>";
+                        // print_r($cardOpts);
+                        // echo "<pre>";
+                        foreach($cardOpts as $card) {
+                            createCard($card);
+                            // echo "<br>";
+                            // print_r($card);
+                            // echo "<br>";
+                        }
+                        ?>
+                    <!-- </div> -->
+                </div>
+            </div>
         </div>
     </div>
+
 </section>
+
 
 
 <?php
