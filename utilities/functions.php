@@ -75,7 +75,7 @@ function dropdown_option($text,$varname, $opt, $get) {
 function form_end() {  
     echo "</div>";
 	echo "<div class=\"form-group mt-4\">"; 
-    echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-search\" value=\"Search Orders\">";
+    echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-filter\" value=\"Filter Art\">";
     echo "</div></div></div>";
     echo "</form>";
 }
@@ -116,14 +116,14 @@ function form_end() {
     <!-- </div> -->
 <?php } ?>
 
-<?php function paging($page, $number_of_page) { ?>
+<?php function paging($page, $number_of_page, $curPage) { ?>
     <nav aria-label="Browse additional pages" class="table-responsive mt-5">
         <ul class="pagination justify-content-center flex-wrap">
             <li class="page-item">
             <a class="page-link" 
             <?php 
-                    $prev = $page-1;
-                    echo "href = \"browse.php?page=' . $prev . '\" ";
+                    $prev = $curPage-1;
+                    echo "href = \"browse.php?page=$prev\" ";
             ?> 
             aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
@@ -134,14 +134,14 @@ function form_end() {
 
                 //display the link of the pages in URL  
                 for($page = 1; $page<= $number_of_page; $page++) {  
-                    echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=' . $page . '\">$page</a></li>";   
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=$page\">$page</a></li>";   
                 }  
                  
             ?>
             <a class="page-link" 
                 <?php 
-                    $next = $page+1;
-                    echo "href = \"browse.php?page=' . $next . '\"";
+                    $next = $curPage+1;
+                    echo "href = \"browse.php?page=$next\"";
                 ?> 
             aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>

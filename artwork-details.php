@@ -88,6 +88,15 @@ require('utilities/functions.php');
             <div class="col-6 limit"> 
                 <img class="" <?php echo "src=\""; echo $detailsOpts['PhotoURL']; echo "\""; ?>
                 >
+                <?php 
+                echo "<img src=\"";
+                if ($detailsOpts['PhotoURL'] ==""){
+                    echo "assets/no-image.png\"";
+                } else {
+                    echo $detailsOpts['PhotoURL'];
+                    echo "\"";
+                }
+                ?>
             </div>
         </div>
     </div>
@@ -104,16 +113,32 @@ require('utilities/functions.php');
 
         <div class="tab-content">
             <div id="location" class="tab-pane fade in show active">
-                <h3>Google Maps</h3>
-                <p><?php echo $detailsOpts['Geom'];?></p>
+                <h3 class="mt-5">Google Maps</h3>
+                <p class="mb-5"><?php echo $detailsOpts['Geom'];?></p>
             </div>
             <div id="description" class="tab-pane fade">
-                <h3>Description of Work</h3>
-                <p><?php echo $detailsOpts['DescriptionOfwork'];?></p>
+                <h3 class="mt-5">Description of Work</h3>
+                <?php 
+                if ($detailsOpts['DescriptionOfwork'] ==""){
+                    echo "<h5 class=\"mb-5\">No description avaliable</h5>";
+                } else {
+                    echo "<p class=\"mb-5\">";
+                    echo $detailsOpts['DescriptionOfwork'];
+                    echo "</p>";
+                }
+                ?>
             </div>
             <div id="artist-stat" class="tab-pane fade">
-                <h3>Artist Statment</h3>
-                <p><?php echo $detailsOpts['ArtistProjectStatement'];?></p>
+                <h3 class="mt-5">Artist Statment</h3>
+                <?php 
+                if ($detailsOpts['ArtistProjectStatement'] ==""){
+                    echo "<h5 class=\"mb-5\">No artist statement avaliable</h5>";
+                } else {
+                    echo "<p class=\"mb-5\">";
+                    echo $detailsOpts['ArtistProjectStatement'];
+                    echo "</p>";
+                }
+                ?>
             </div>
         </div>
         </div>
