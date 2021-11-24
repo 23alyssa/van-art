@@ -115,48 +115,45 @@ function form_end() {
     <!-- </div> -->
 <?php } ?>
 
+<?php function paging($page, $number_of_page) { ?>
+    <nav aria-label="Browse additional pages" class="table-responsive mt-5">
+        <ul class="pagination justify-content-center flex-wrap">
+            <li class="page-item">
+            <a class="page-link" 
+            <?php 
+                    $prev = $page-1;
+                    echo "href = \"browse.php?page=' . $prev . '\" ";
+            ?> 
+            aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+            </li>
+            <?php 
+
+                //display the link of the pages in URL  
+                for($page = 1; $page<= $number_of_page; $page++) {  
+                    echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=' . $page . '\">$page</a></li>";   
+                }  
+                 
+            ?>
+            <a class="page-link" 
+                <?php 
+                    $next = $page+1;
+                    echo "href = \"browse.php?page=' . $next . '\"";
+                ?> 
+            aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+            </li>
+        </ul>
+    </nav>
+
+<?php } ?>
+
 
 <?php 
-
-function paging($query){
-
-    //define total number of results you want per page  
-    $results_per_page = 25;  
-  
-    //find the total number of results stored in the database  
-    // $query = "select *from alphabet";  
-    $result = mysqli_query($connection, $query);  
-    $number_of_result = mysqli_num_rows($result);  
-  
-    //determine the total number of pages available  
-    $number_of_page = ceil ($number_of_result / $results_per_page);  
-  
-    //determine which page number visitor is currently on  
-    if (!isset ($_GET['page']) ) {  
-        $page = 1;  
-    } else {  
-        $page = $_GET['page'];  
-    }  
-  
-    //determine the sql LIMIT starting number for the results on the displaying page  
-    $page_first_result = ($page-1) * $results_per_page;  
-  
-    //retrieve the selected results from database   
-    $query = "SELECT *FROM alphabet LIMIT " . $page_first_result . ',' . $results_per_page;  
-    $result = mysqli_query($connection, $query);  
-      
-    //display the retrieved result on the webpage  
-    while ($row = mysqli_fetch_array($result)) {  
-        echo $row['id'] . ' ' . $row['alphabet'] . '</br>';  
-    }  
-  
-  
-    //display the link of the pages in URL  
-    for($page = 1; $page<= $number_of_page; $page++) {  
-        echo '<a href = "browse.php?page=' . $page . '">' . $page . ' </a>';  
-    }  
-
-}
 
 ?>
 

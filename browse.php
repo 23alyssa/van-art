@@ -102,23 +102,41 @@ require('utilities/functions.php');
 
 //Card Information: -----
     // populate the dropdown with all the types for users to pick from 
-    $cardQuery = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art LIMIT 25";
+    $cardQuery = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art";
     $cardQueryResult = mysqli_query($connection, $cardQuery);
 
+    //define total number of results you want per page  
+    $results_per_page = 25;  
+                    
+    //find the total number of results stored in the database    
+    $number_of_result = mysqli_num_rows($cardQueryResult);  
+
+    //determine the total number of pages available  
+    $number_of_page = ceil ($number_of_result / $results_per_page);  
+
+    //determine which page number visitor is currently on  
+    if (!isset ($_GET['page']) ) {  
+        $page = 1;  
+    } else {  
+        $page = $_GET['page'];  
+    }  
+
+    //determine the sql LIMIT starting number for the results on the displaying page  
+    $page_first_result = ($page-1) * $results_per_page;  
+
+    //retrieve the selected results from database   
+    $query2 = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art LIMIT " . $page_first_result . ',' . $results_per_page;  
+
+    $resultPaging = mysqli_query($connection, $query2); 
+
+
     //make a new array to hold the value from the query to use in the form_dropdown function
-    // $card = array();
-    // $cardOpts = [ "RegistryID" => "", "PhotoURL" => "", "YearOfInstallation" => "", "SUBSTRING(public_art.DescriptionOfwork,1,70)" => ""];
     $cardOpts = [];
 
-    //loop through the results and populate the new array to hold the values for dropdown
+    //display the retrieved result on the webpage  
     if ($cardQueryResult != NULL) {
-        while ($row = mysqli_fetch_assoc($cardQueryResult)) {
+        while ($row = mysqli_fetch_array($resultPaging)) {
             $cardOpts[] = [$row['RegistryID'],$row['PhotoURL'],$row['YearOfInstallation'], $row['SUBSTRING(public_art.DescriptionOfwork,1,70)']];
-        
-        // $cardOpts['RegistryID'] = $row['RegistryID'];
-        // $cardOpts['PhotoURL'] = $row['PhotoURL'];
-        // $cardOpts['YearOfInstallation'] = $row['YearOfInstallation'];
-        // $cardOpts['SUBSTRING(public_art.DescriptionOfwork,1,70)'] = $row['SUBSTRING(public_art.DescriptionOfwork,1,70)'];
         }    
     }
 
@@ -141,22 +159,20 @@ require('utilities/functions.php');
             </sidebar>
             <div class="col-9"> 
                 <div class="row">
-                    <!-- <div class="card-columns"> -->
                         <?php
-                        // echo "<pre>";
-                        // print_r($cardOpts);
-                        // echo "<pre>";
                         foreach($cardOpts as $card) {
                             createCard($card);
-                            // echo "<br>";
-                            // print_r($card);
-                            // echo "<br>";
                         }
+                        // paging($page, $number_of_page);
+                    
                         ?>
                     <!-- </div> -->
                 </div>
             </div>
         </div>
+        <?php
+            paging($page, $number_of_page);
+        ?>
     </div>
 
 </section>
