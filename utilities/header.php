@@ -34,8 +34,8 @@
                 <input type="search" class="form-control" placeholder="Search" aria-label="Search"/>
                 <button class="btn" type="button" data-mdb-ripple-color="dark"><i class="fas fa-search"></i></button>
                 <div class="p-2">
-                    <button class="btn btn-secondary-outline" type="button">Login</button>
-                    <button class="btn btn-primary" type="button">Sign Up</button>
+                    <a class="btn btn-secondary-outline" href="login.php">Login</a>
+                    <a class="btn btn-primary" href="register.php">Sign Up</a>
                 </div>
             </form>
 

@@ -7,7 +7,7 @@ $password = '';
 
 // TODO: This page should not show if a session is present.
 // Redirect to staff index if a session is detected.
-if(isset($_SESSION['username'])) {redirect_to(url_for('van-art/browse.php'));}
+// if(isset($_SESSION['username'])) {redirect_to(url_for('van-art/browse.php'));}
 
 
 // END TODO
@@ -30,7 +30,7 @@ if(is_post_request()) {
 
           // Store session and redirect
           $_SESSION['username'] = $_POST['username'];
-          redirect_to(url_for('/van-art/browse.php'));
+          redirect_to(url_for('/../van-art/browse.php'));
         } else {
           // If verify fails, display an error message
           array_push($errors, "The entered password do not match our record.");

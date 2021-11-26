@@ -86,10 +86,10 @@ require('utilities/functions.php');
                 </ul>
             </sidebar>
             <div class="col-6 limit"> 
-                <img class="" <?php echo "src=\""; echo $detailsOpts['PhotoURL']; echo "\""; ?>
-                >
+                
+                
                 <?php 
-                echo "<img src=\"";
+                echo "<img class=\"img-details\" src=\"";
                 if ($detailsOpts['PhotoURL'] ==""){
                     echo "assets/no-image.png\"";
                 } else {
