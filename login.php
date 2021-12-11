@@ -30,7 +30,7 @@ if(is_post_request()) {
 
           // Store session and redirect
           $_SESSION['username'] = $_POST['username'];
-          redirect_to(url_for('/van-art/members.php'));
+          redirect_to('members.php');
         } else {
           // If verify fails, display an error message
           array_push($errors, "The entered password do not match our record.");
