@@ -43,7 +43,7 @@ require('utilities/functions.php');
             WHERE username='$username'";
             if ($connection->query($updatesql) === TRUE) {
                 echo "Record updated successfully";
-                redirect_to(url_for('/van-art/members.php'));
+                redirect_to('members.php');
             } else {
                 echo "Error updating record: " . $connection->error;
             }
