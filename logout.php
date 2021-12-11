@@ -9,6 +9,6 @@ unset($_SESSION['username']);
 
 // End of TODO
 
-redirect_to(url_for('/login.php'));
+redirect_to(url_for('van-art/browse.php'));
 
 ?>

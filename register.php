@@ -49,7 +49,7 @@ if(is_post_request()) {
       if(mysqli_query($db, $insert_user_query)) {
         // INSERT is successful, save a session then redirect to dashboard
         $_SESSION['username'] = $_POST['username'];
-        redirect_to(url_for('../van-art/browse.php'));
+        redirect_to(url_for('/van-art/members.php'));
       } else {
         // Display the mysql error if failed
         array_push($errors, mysqli_error($db));
