@@ -53,10 +53,18 @@ $line-height-base: 2;
 .heart {
     // font-size: 50px;
       color:red;
-  }
+}
 
-  .upvote {
-    // font-size: 50px;
-      color:$primary;
+.upvote {
+// font-size: 50px;
+    color:$primary;
+}
+
+  /* Set the size of the div element that contains the map */
+#map {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
   }
 

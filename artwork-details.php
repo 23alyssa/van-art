@@ -71,6 +71,7 @@ require('utilities/functions.php');
 
 ?>
 
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <section class="container">
     <div class="mt-5">
         <div class="row pt-5">
@@ -120,6 +121,45 @@ require('utilities/functions.php');
             <div id="location" class="tab-pane fade in show active">
                 <h3 class="mt-5">Google Maps</h3>
                 <p class="mb-5"><?php echo $detailsOpts['Geom'];?></p>
+
+                <style type="text/css">
+                /* Set the size of the div element that contains the map */
+                #map {
+                    height: 400px;
+                    /* The height is 400 pixels */
+                    width: 100%;
+                    /* The width is the width of the web page */
+                }
+                </style>
+                <script>
+                // Initialize and add the map
+                function initMap() {
+                    // The location of Uluru
+                    const uluru = { lat: -123.113918, lng: 49.261185 };
+                    // The map, centered at Uluru
+                    const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 4,
+                    center: uluru,
+                    });
+                    // The marker, positioned at Uluru
+                    const marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map,
+                    });
+                }
+                </script>
+   
+                <!--The div element for the map -->
+                <div id="map"></div>
+                <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN3oCpOvP7l-434QFxdfY32wBdo2DEPic&callback=initMap&libraries=&v=weekly"
+                async
+                ></script>
+
+
+
+
             </div>
             <div id="description" class="tab-pane fade">
                 <h3 class="mt-5">Description of Work</h3>
