@@ -3,6 +3,16 @@ require_once('private/initialize.php');
 
 $errors = [];
 
+// Import the db configuration file here and create a connection to the DB
+require('utilities/db.php');
+$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+
+// Make sure the connection is successfully established, otherwise stop processing the rest of the script.
+if(mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    exit();
+  }
+
 // TODO: This page should not show if a session is present.
 // Redirect to staff index if a session is detected.
 // if(isset($_SESSION['username'])) {redirect_to(url_for('van-art/browse.php'));}
@@ -25,6 +35,9 @@ if(is_post_request()) {
     } else {
       // Else encrpyt the password
       $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+      
+      echo "<h1>".$_POST['username']."</h1>";
 
       $insert_user_query = "INSERT INTO member(username, email, hashed_password, first_name, last_name) VALUES (
                             '" . mysqli_real_escape_string($db, $_POST['username'])  . "',

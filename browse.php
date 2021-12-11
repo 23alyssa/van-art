@@ -1,4 +1,5 @@
 <?php
+require_once('private/initialize.php');
 
 //display all errors on screen
 ini_set('display_errors', 1);
