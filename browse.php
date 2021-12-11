@@ -16,7 +16,6 @@ if(mysqli_connect_errno()) {
     exit();
 }
 
-
 //header.php has information for bootstrap and page title
 require('utilities/header.php');
 
@@ -122,117 +121,97 @@ require('utilities/functions.php');
                     //loader 
                     // echo "<img src=\"assets/loader.svg\" id=\"loader\" width=\"100\" style=\"display:none;\">";
 
-                    // // check form 
-                    // $where = "";
+                    $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
                     
-                    // if (!empty($year)){
-                    //     $where = " WHERE public_art.YearOfInstallation = '$year'";
-                    // } 
-
-                    // // on pageload automatically show all the coloumns for results (auto check all boxes)
-                    // $typeFilter = "";
-                    // if (isset($type) && !empty($type)) {
-                    // //turn the array of selected checkboxes into a string to use in Select statement
-                    // $typeFilter = "'" . implode("' , '", $type) . "'";
-                    // $where = " WHERE public_art.Type IN ($typeFilter)";
-                    // } 
-
-                    // // $where = " WHERE $yearF AND $typeF";
-
-                    // print_r($typeFilter);
-                    // echo"<br><br>";
-
-                    // populate the dropdown with all the types for users to pick from 
-                    // $cardQuery = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art $where";
-                    // $cardQueryResult = mysqli_query($connection, $cardQuery);
-
-                    // //define total number of results you want per page  
-                    // $results_per_page = 25;  
+                    $resultFilter = mysqli_query($connection, $sql);
+    
+                    //define total number of results you want per page  
+                    $results_per_page = 10;  
                                     
-                    // //find the total number of results stored in the database    
-                    // $number_of_result = mysqli_num_rows($cardQueryResult);  
-
-                    // //determine the total number of pages available  
-                    // $number_of_page = ceil ($number_of_result / $results_per_page);  
-
-                    // //determine which page number visitor is currently on  
-                    // if (!isset ($_GET['page']) ) {  
-                    //     $page = 1;  
-                    // } else {  
-                    //     $page = $_GET['page'];  
-                    // }  
-
-                    // //determine the sql LIMIT starting number for the results on the displaying page  
-                    // (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
-
-                    // // //retrieve the selected results from database   
-                    $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art LIMIT 10";
-                    // $where LIMIT " . $page_first_result . ',' . $results_per_page;  
-
-                    // echo $sql;
-
-                    $resultPaging = mysqli_query($connection, $sql); 
-
-                    //make a new array to hold the value from the query to use in the form_dropdown function
-                    $cardOpts = [];
+                    //find the total number of results stored in the database    
+                    $number_of_result = mysqli_num_rows($resultFilter);  
+                
+                    //determine the total number of pages available  
+                    $number_of_page = ceil ($number_of_result / $results_per_page);  
+                
+                    //determine which page number visitor is currently on  
+                    if (!isset ($_GET['page']) ) {  
+                        $page = 1;  
+                    } else {  
+                        $page = $_GET['page'];  
+                    }  
+                
+                    //determine the sql LIMIT starting number for the results on the displaying page  
+                    (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
+                    $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
+                
+                    $resultFilter = mysqli_query($connection, $sql);
+                    echo $sql; 
+                    echo "<br><br>";
+                    echo "count:" .mysqli_num_rows($resultFilter);
 
                     //display the retrieved result on the webpage  
-                    if ($resultPaging != NULL) {
-                        while ($row = mysqli_fetch_array($resultPaging)) {
-                            $cardOpts[] = [$row['RegistryID'],$row['PhotoURL'],$row['YearOfInstallation'], $row['SUBSTRING(public_art.DescriptionOfwork,1,70)']];
+                    if ($resultFilter != NULL) {
+                        while ($row = mysqli_fetch_array($resultFilter)) {
+                            $output =createCard($row);
                         }    
                     }
-                        foreach($cardOpts as $card) {
-                            createCard($card);
-                        } 
+                    
+                    echo $output;
+                    // paging($page, $number_of_page, $page);
 
+                    ?> 
+                    <nav aria-label="Browse additional pages" class="table-responsive mt-5">
+                            <ul class="pagination justify-content-center flex-wrap" id="paginate">
+                                <li class="page-item">
+                                <a class="page-link" 
+                                <?php 
+                                        $prev = $page-1;
+                                        echo "href = \"browse.php?page=$prev\" ";
+                                ?> 
+                                aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                </li>
+                                <?php 
+
+                                    //display the link of the pages in URL  
+                                    for($page = 1; $page<= $number_of_page; $page++) {  
+                                        echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=$page\">$page</a></li>";   
+                                    }  
+                                    
+                                ?>
+                                <a class="page-link" 
+                                    <?php 
+                                        $next = $page+1;
+                                        echo "href = \"browse.php?page=$next\"";
+                                    ?> 
+                                aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    <?php
                     ?>
                 </div>
             </div>
         </div>
         <?php
-            // paging($page, $number_of_page, $page);
+            
         ?>
     </div>
 
 </section>
 
-<!-- <script type="text/javascript">
-
-    $(document).ready(function(){
-        // alert("hello"); //check is jquery library is working
-
-        $(".art_check").click(function(){
-            $("#loader").show();
-
-            var action = 'data';
-            var types = get_filter_text('types');
-            var neighbourhood = get_filter_text('neighbourhood');
-
-            $.ajax({
-                url:'browse-action.php', 
-                method: 'POST', 
-                data: {action:action, types:types, neighbourhood:neighbourhood},
-                sucess:function(response){
-                    $("#result").html(response);
-                    $("#loader").hide();
-                    $("textChange").text("Filtered Artwork");
-                }
-            })
-        });
-
-        function get_filter_text(text_id) {
-            var filterData = [];
-            $('#'+text_id+':checked').each(function(){
-                filterData.push($(this).val());
-            });
-            return filterData;
-        }
-    });
-    
-</script> -->
 
 <?php 
 //page footer for bootstrap and copyright
 require('utilities/footer.php');
 ?>
+
+    <!-- $sql .= "LIMIT " .$page_first_result. ',' .$results_per_page; -->
+
+    

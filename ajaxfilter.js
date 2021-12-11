@@ -1,5 +1,6 @@
 $(document).ready(function(){
     // alert("hello"); //check is jquery library is working
+      
 
     $(".art_check").click(function(){
         // $("#loader").show();
@@ -19,6 +20,7 @@ $(document).ready(function(){
                 $("#result").html(response);
                 // $("#loader").hide();
                 $("#textChange").text("Filtered Artwork");
+                $("#paging").hide();
             }
         })
     });

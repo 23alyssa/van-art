@@ -84,6 +84,11 @@ require('utilities/functions.php');
                     <li>Site Address: <?php echo $detailsOpts['SiteAddress'];?></li>
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
+
+                <a class="ml-3"><i class="heart fa fa-heart-o fa-2x"></i></a>
+                <a class="ml-3"><i class="upvote far fa-arrow-alt-circle-up fa-2x"></i></a>
+
+            
             </sidebar>
             <div class="col-6 limit"> 
                 

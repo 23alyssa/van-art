@@ -12504,8 +12504,16 @@ textarea.form-control-lg {
   border: none;
 }
 
-img.img-details {
+.img-details {
   width: auto;
   height: 100%;
-  max-height: 700px;
+  max-height: 550px;
+}
+
+.heart {
+  color: red;
+}
+
+.upvote {
+  color: #2374AB;
 }
