@@ -68,3 +68,21 @@ $line-height-base: 2;
     /* The width is the width of the web page */
   }
 
+.img-display {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+}
+
+.img-display-sm {
+    width:auto; 
+    height:55%; 
+    max-height:550px
+}
+
+.img-display-xsm {
+    width:auto; 
+    height:35%; 
+    max-height:550px
+}

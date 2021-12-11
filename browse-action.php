@@ -1,3 +1,4 @@
+
 <?php 
 
 //display all errors on screen
@@ -21,6 +22,7 @@ require('utilities/functions.php');
 
 // require('browse.php');
 //  echo "connected";
+
 
 if( isset($_POST['action'])) {
     $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";

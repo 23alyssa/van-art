@@ -148,6 +148,8 @@ require('utilities/functions.php');
                     });
                 }
                 </script>
+
+                <!-- ENABLE BILLING FOR API KEY -->
    
                 <!--The div element for the map -->
                 <div id="map"></div>
