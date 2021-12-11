@@ -11,23 +11,23 @@ function form_start() {
 }
 
 //this function creates the checkbox for filtering
-function form_check($label,$varname,$options,$texts, $get) {
+function form_check($label,$varname,$options,$texts, $get, $id) {
     global $$varname;
 	echo "<div class=\"form-group mt-4\">";
     echo"<label for=\"$varname\">$label</label><div>";
     
     $i = 0;
     foreach($options as $opt) 
-        form_check_option($texts[$i++],$varname, $opt, $get);
+        form_check_option($texts[$i++],$varname, $opt, $get, $id);
         
 	echo "</div>";
 }
 
 //this function populates the information for the checkbox
-function form_check_option($text,$varname, $opt, $get) {
+function form_check_option($text, $varname, $opt, $get, $id) {
     global $$varname;
     echo"<div class=\"form-check\">";
-    echo "<input class=\"form-check-input\" type=\"checkbox\" name=\"$varname\" value=\"$opt\" ";
+    echo "<input class=\"form-check-input art_check\" type=\"checkbox\" name=\"$varname\" id=\"$id\" value=\"$opt\" ";
     //check if the get variable is set, then loop through the checkbox array
     // for each item in the get array check if it is equal to the current option - if yes then it has been selected
     if(isset($get)) {
@@ -75,9 +75,9 @@ function dropdown_option($text,$varname, $opt, $get) {
 function form_end() {  
     echo "</div>";
 	echo "<div class=\"form-group mt-4\">"; 
-    echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-filter\" value=\"Filter Art\">";
+    // echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-filter\" value=\"Filter Art\">";
     echo "</div></div></div>";
-    echo "</form>";
+    // echo "</form>";
 }
 
 ?>
@@ -93,15 +93,13 @@ function form_end() {
                  
                  <?php 
                  echo "src=\"";
-                 $i = 0;
-                while ($i < count($row)) {
+                 if (count($row)>=0){
                     if($row[1] == ""){
                         echo "assets/no-image.png\"";
                     } else if($row[1] != "") {
                         echo $row[1];
                         echo "\"";
                     }
-                    $i++;
                 }
                  ?>
             >
