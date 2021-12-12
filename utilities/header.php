@@ -17,6 +17,7 @@
     <script src="https://use.fontawesome.com/e11dcbda4a.js"></script>
 
     <script src="styles/style.js"></script> 
+    
 
     <title>Vancouver Art</title>
 </head>

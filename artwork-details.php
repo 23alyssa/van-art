@@ -71,6 +71,7 @@ require('utilities/functions.php');
 
 ?>
 
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <section class="container">
     <div class="mt-5">
@@ -119,8 +120,40 @@ require('utilities/functions.php');
 
         <div class="tab-content">
             <div id="location" class="tab-pane fade in show active">
-                <h3 class="mt-5">Google Maps</h3>
-                <p class="mb-5"><?php echo $detailsOpts['Geom'];?></p>
+                <h3 class="mt-5">Map</h3>
+                <!-- <p class="mb-5"><?php echo $detailsOpts['Geom'];?></p> -->
+                
+                <?php 
+                     // decode format to retrieve longitute and latitude for map
+                    $string = $detailsOpts['Geom'];
+                    $pattern = '{"type": "Point", "coordinates":}';
+                    $replacement = '';
+                    $edit = preg_replace($pattern, $replacement, $string);
+
+                    $pattern2 = '{[\}\{]}';
+                    $replacement2 = '';
+                    $edit2 = preg_replace($pattern2, $replacement2, $edit);
+
+                    $loc = str_replace( array('[',']') , ''  , $edit2 );
+                    $lng_lat = explode(",", $loc);
+
+                    // print_r($lng_lat);
+                    //  echo "$lng_lat[1],$lng_lat[0]"; 
+
+                ?>
+                
+                
+
+                <div ng-cloak ng-app="ods-widgets">
+
+            <!-- <ods-dataset-context context="vancouverpublicart" vancouverpublicart-dataset="vancouver-public-art" vancouverpublicart-parameters="{'refine.type':'Welcome figure'}">
+                <ods-map no-refit="true" scroll-wheel-zoom="false" display-control="true" search-box="false" toolbar-fullscreen="true" toolbar-geolocation="true" location="17, <?php //echo "$lng_lat[1],$lng_lat[0]"; ?>">
+                    <ods-map-layer-group>
+                        <ods-map-layer context="vancouverpublicart" color="#C32D1C" picto="ods-circle" show-marker="true" display="auto" shape-opacity="0.5" point-opacity="1" border-color="#FFFFFF" border-opacity="1" border-size="1" border-pattern="solid" c size="4" size-min="3" size-max="5" size-function="linear"></ods-map-layer>
+                    </ods-map-layer-group>
+                </ods-map>
+
+            </ods-dataset-context> -->
 
                 <style type="text/css">
                 /* Set the size of the div element that contains the map */
@@ -135,10 +168,10 @@ require('utilities/functions.php');
                 // Initialize and add the map
                 function initMap() {
                     // The location of Uluru
-                    const uluru = { lat: -123.113918, lng: 49.261185 };
+                    const uluru = { lat: <?php echo "$lng_lat[1]"; ?>, lng: <?php echo "$lng_lat[0]"; ?> };
                     // The map, centered at Uluru
                     const map = new google.maps.Map(document.getElementById("map"), {
-                    zoom: 4,
+                    zoom: 16,
                     center: uluru,
                     });
                     // The marker, positioned at Uluru
@@ -149,12 +182,13 @@ require('utilities/functions.php');
                 }
                 </script>
 
-                <!-- ENABLE BILLING FOR API KEY -->
+                 <!-- ENABLE BILLING FOR API KEY --> 
    
                 <!--The div element for the map -->
                 <div id="map"></div>
                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-                <script
+         
+                <script 
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN3oCpOvP7l-434QFxdfY32wBdo2DEPic&callback=initMap&libraries=&v=weekly"
                 async
                 ></script>
