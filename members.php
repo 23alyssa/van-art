@@ -39,6 +39,7 @@ require('utilities/functions.php');
   <br>
   <input type="submit" value="Edit Information"/>
   </form>
+  <h1> Favorites </h1>
 </div>
 
 
