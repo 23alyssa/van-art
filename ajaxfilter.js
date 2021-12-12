@@ -13,7 +13,7 @@ $(document).ready(function(){
         
         $.ajax({
             url:'browse-action.php', 
-            method: 'POST', 
+            method: 'GET', 
             data: {action: action, types: types, neighbourhood: neighbourhood},
             success:function(response){
 

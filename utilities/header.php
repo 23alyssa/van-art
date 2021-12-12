@@ -17,6 +17,12 @@
     <script src="https://use.fontawesome.com/e11dcbda4a.js"></script>
 
     <script src="styles/style.js"></script> 
+
+    <!-- Bootstrap icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
     
 
     <title>Vancouver Art</title>

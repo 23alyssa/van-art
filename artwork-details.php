@@ -91,7 +91,10 @@ require('utilities/functions.php');
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
                 
-                <a class="ml-3"><i class="heart fa fa-heart-o fa-2x"></i></a>
+                <button type="button" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
+                    <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
+                </button>
+
                 <?php 
                 $name = $_SESSION['username'];
                 $sql = "SELECT user_id FROM member WHERE username='$name'";
@@ -112,7 +115,13 @@ require('utilities/functions.php');
                 }
 
                 ?>
-                <a class="ml-3"><i class="upvote far fa-arrow-alt-circle-up fa-2x"></i></a>
+
+                <form action="artwork-details.php" method="post" class="mt-auto">
+                    <button type="button" name="vote" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-dark">
+                        <i class="far fa-arrow-alt-circle-up card-link"></i> Upvote
+                    </button>
+                </form>
+                <!-- <a class="ml-3"><i class="upvote far fa-arrow-alt-circle-up fa-2x"></i></a> -->
 
                 <!--
                 <form method="POST">

@@ -103,21 +103,33 @@ function form_end() {
                 }
                  ?>
             >
-            <div class="card-body">
-                <h5 class="text-body card-title"><?= $row[0] ?></h5>
-                <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
-                <p class="text-body card-text"><?= $row[3]?>...</p>
-                <div class="">
-                    <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
-                    <a class="text-decoration-none d-flex justify-content-end ml-3"><i class="heart fa fa-heart-o"></i></a>
-                </div>
-                
-                <!-- <input class="btn btn-primary btn-lg" type="submit" name="submit-filter" value="Filter Art"> -->
+            <div class="card-body d-flex flex-column justify-content-between">
+                <!-- <div> -->
+                    <h5 class="text-body card-title"><?= $row[0] ?></h5>
+                    <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
+                    <?php 
+                        if ($row[5]!= ""){
+                            echo "<p class=\"text-body card-text\">$row[5]...</p>";
+                        } else {
+                            echo "<p class=\"text-body card-text\">No description avaliable</p>";
+                        }
+                    ?>
+                    <div>
+                        <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
+                        <form action="browse.php" method="post" class="mt-auto">
+                        <button type="button" name="fav" id="<?= $row[2] ?>" class="btn btn-outline-primary">
+                            <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
+                        </button>
+                        </form>
+                    </div>
+                <!-- </div> -->
             </div>
             </a>
         </div>
     <!-- </div> -->
 <?php } ?>
+
+
 
 <?php function paging($page, $number_of_page, $curPage) { ?>
     <nav aria-label="Browse additional pages" class="table-responsive mt-5">

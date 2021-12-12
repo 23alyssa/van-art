@@ -1,8 +1,5 @@
 <?php
-
-ob_start(); // output buffering is turned on
-
-session_start(); // turn on sessions
+require_once('private/initialize.php');
 
 //display all errors on screen
 ini_set('display_errors', 1);
@@ -123,53 +120,106 @@ require('utilities/functions.php');
                     //Card Information: -----
 
                     //loader 
-                    // echo "<img src=\"assets/loader.svg\" id=\"loader\" width=\"100\" style=\"display:none;\">";
+                    // echo "<img src=\"assets/loader.svg\" id=\"loader\" width=\"100\" style=\"display:none;\">";'
 
-                    //  include('browse-action.php');
+                    if( isset($_GET['action'])) {
+                        //get filter results 
+                        $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
 
-                    $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
+                        if( isset($_GET['types'])) {
+                            $types = implode("','", $_GET['types']);
+                            $sql .= "AND public_art.Type IN('".$types."')";
+                        }
+
+                        if( isset($_GET['neighbourhood'])) {
+                            $neighbourhood = implode("','", $_GET['neighbourhood']);
+                            $sql .= "AND public_art.Neighbourhood IN('".$neighbourhood."')";
+                        }
+
+                        $resultFilter = mysqli_query($connection, $sql);
+                        
+                        //define total number of results you want per page  
+                        $results_per_page = 10;  
+                                        
+                        //find the total number of results stored in the database    
+                        $number_of_result = mysqli_num_rows($resultFilter);  
+
+                        //determine the total number of pages available  
+                        $number_of_page = ceil ($number_of_result / $results_per_page);  
+
+                        //determine which page number visitor is currently on  
+                        if (!isset ($_GET['page']) ) {  
+                            $page = 1;  
+                        } else {  
+                            $page = $_GET['page'];  
+                        }  
+
+                        //determine the sql LIMIT starting number for the results on the displaying page  
+                        (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
+                        $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
+
+                        $resultFilter = mysqli_query($connection, $sql);
+                        echo $sql; 
+                        echo "count:" .mysqli_num_rows($resultFilter);
+                        
+
+                        if ($resultFilter != NULL) {
+                            if (mysqli_num_rows($resultFilter)>0) {
+                                while ($row = mysqli_fetch_array($resultFilter)) {
+                                    $output =createCard($row);
+                                } 
+                            } else { 
+                                $output = "<h3>No results found</h3>";
+                            }
+                        }
+
+                    } else {
+                        //display all
+                        $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
                     
-                    $resultFilter = mysqli_query($connection, $sql);
+                        $resultFilter = mysqli_query($connection, $sql);
+        
+                        //define total number of results you want per page  
+                        $results_per_page = 10;  
+                                        
+                        //find the total number of results stored in the database    
+                        $number_of_result = mysqli_num_rows($resultFilter);  
+                    
+                        //determine the total number of pages available  
+                        $number_of_page = ceil ($number_of_result / $results_per_page);  
+                    
+                        //determine which page number visitor is currently on  
+                        if (!isset ($_GET['page']) ) {  
+                            $page = 1;  
+                        } else {  
+                            $page = $_GET['page'];  
+                        }  
+                    
+                        //determine the sql LIMIT starting number for the results on the displaying page  
+                        (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
+                        $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
+                    
+                        $resultFilter = mysqli_query($connection, $sql);
+                        echo $sql; 
+                        echo "<br><br>";
+                        echo "count:" .mysqli_num_rows($resultFilter);
     
-                    //define total number of results you want per page  
-                    $results_per_page = 10;  
-                                    
-                    //find the total number of results stored in the database    
-                    $number_of_result = mysqli_num_rows($resultFilter);  
-                
-                    //determine the total number of pages available  
-                    $number_of_page = ceil ($number_of_result / $results_per_page);  
-                
-                    //determine which page number visitor is currently on  
-                    if (!isset ($_GET['page']) ) {  
-                        $page = 1;  
-                    } else {  
-                        $page = $_GET['page'];  
-                    }  
-                
-                    //determine the sql LIMIT starting number for the results on the displaying page  
-                    (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
-                    $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
-                
-                    $resultFilter = mysqli_query($connection, $sql);
-                    echo $sql; 
-                    echo "<br><br>";
-                    echo "count:" .mysqli_num_rows($resultFilter);
-
-                    //display the retrieved result on the webpage  
-                    if ($resultFilter != NULL) {
-                        while ($row = mysqli_fetch_array($resultFilter)) {
-                            $output =createCard($row);
-                            // print_r($row);
-                        }    
+                        //display the retrieved result on the webpage  
+                        if ($resultFilter != NULL) {
+                            while ($row = mysqli_fetch_array($resultFilter)) {
+                                $output =createCard($row);
+                            }    
+                        }
+                        
+                        echo $output;
                     }
+
+ 
                     
-                    echo $output;
-                    
-                    // paging($page, $number_of_page, $page);
+                    paging($page, $number_of_page, $page);
 
                     ?> 
-                    <nav aria-label="Browse additional pages" class="table-responsive mt-5">
+                    <!-- <nav aria-label="Browse additional pages" class="table-responsive mt-5">
                             <ul class="pagination justify-content-center flex-wrap" id="paginate">
                                 <li class="page-item">
                                 <a class="page-link" 
@@ -201,7 +251,7 @@ require('utilities/functions.php');
                                 </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> -->
                     <?php
                     ?>
                 </div>
@@ -219,7 +269,3 @@ require('utilities/functions.php');
 //page footer for bootstrap and copyright
 require('utilities/footer.php');
 ?>
-
-    <!-- $sql .= "LIMIT " .$page_first_result. ',' .$results_per_page; -->
-
-    
