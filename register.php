@@ -1,5 +1,8 @@
 <?php
-require_once('private/initialize.php');
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+require_once('utilities/functions.php');
 
 $errors = [];
 
@@ -66,7 +69,7 @@ if(is_post_request()) {
 ?>
 
 <?php $page_title = 'Register'; ?>
-<?php include(SHARED_PATH . '/../utilities/header.php'); ?>
+<?php include('utilities/header.php'); ?>
 
 <div id="content">
   <h1>Register</h1>
@@ -90,4 +93,4 @@ if(is_post_request()) {
   </form>
 </div>
 
-<?php include(SHARED_PATH . '/../utilities/footer.php'); ?>
+<?php include('utilities/footer.php'); ?>

@@ -1,5 +1,9 @@
 <?php
 
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+
 //display all errors on screen
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

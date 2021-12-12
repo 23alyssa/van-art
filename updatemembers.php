@@ -1,5 +1,7 @@
 <?php
-require_once('private/initialize.php');
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
 
 //display all errors on screen
 ini_set('display_errors', 1);
@@ -23,8 +25,6 @@ require('utilities/functions.php');
 
 <div id="content">
   <h1>Update Data for <?php echo $_SESSION['username']?></h1>
-
-  <?php echo display_errors($errors); ?>
 
   <?php 
     $username = $_SESSION['username'];
@@ -68,31 +68,9 @@ require('utilities/functions.php');
     <input type="text" name="newemail" value="<?php echo $row['email'] ?>" /><br />
     <input type="submit" name="update" value="update"/>
   </form>
-<?php 
-/*
-if (empty($_POST['newfirstname'])) {
-    $firstname = "";
-} else {
-    $firstname = $_POST['newfirstname'];
-}
-
-if (empty($_POST['newlastname'])) {
-    $lastname = "";
-} else {
-    $lastname = $_POST['newlastname'];
-}
-
-if (empty($_POST['newemail'])) {
-    $email = "";
-} else {
-    $email = $_POST['newemail'];
-} 
-*/
-
-?>
   
 </div>
 
 
 
-<?php include(SHARED_PATH . '/../utilities/footer.php'); ?>
+<?php include('utilities/footer.php'); ?>

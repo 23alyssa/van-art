@@ -1,5 +1,7 @@
 <?php
-require_once('private/initialize.php');
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
 
 //display all errors on screen
 ini_set('display_errors', 1);
@@ -24,8 +26,6 @@ require('utilities/functions.php');
 <div id="content">
   <h1>Hello <?php echo $_SESSION['username']?></h1>
 
-  <?php echo display_errors($errors); ?>
-
   <form action="updatemembers.php" method="post">
   <?php 
   $username = $_SESSION['username'];
@@ -43,4 +43,4 @@ require('utilities/functions.php');
 
 
 
-<?php include(SHARED_PATH . '/../utilities/footer.php'); ?>
+<?php include('utilities/footer.php'); ?>
