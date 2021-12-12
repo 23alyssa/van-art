@@ -1,5 +1,9 @@
 <?php
 
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+
 //display all errors on screen
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -86,9 +90,35 @@ require('utilities/functions.php');
                     <li>Site Address: <?php echo $detailsOpts['SiteAddress'];?></li>
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
-
+                
                 <a class="ml-3"><i class="heart fa fa-heart-o fa-2x"></i></a>
+                <?php 
+                $name = $_SESSION['username'];
+                $sql = "SELECT user_id FROM member WHERE username='$name'";
+                $result = $connection ->query($sql);
+                $row = mysqli_fetch_assoc($result);
+                $user_id = $row['user_id'];
+                $art_id = $artIDpass;
+                echo $user_id;
+
+                $insertsql = "INSERT INTO favorite ('user_id', 'art_id') VALUES ('$user_id', '$art_id')";
+
+                if ($connection->query($insertsql) === TRUE) {
+                echo "data inserted";
+                }
+                else 
+                {
+                echo "failed";
+                }
+
+                ?>
                 <a class="ml-3"><i class="upvote far fa-arrow-alt-circle-up fa-2x"></i></a>
+
+                <!--
+                <form method="POST">
+                    <input type="submit" name="heart" value="" class="heart fa fa-heart-o fa-2x">
+                </form>
+                -->
 
             
             </sidebar>

@@ -1,5 +1,8 @@
 <?php
-require_once('private/initialize.php');
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+require_once('utilities/functions.php');
 
 $errors = [];
 
@@ -27,7 +30,7 @@ if(is_post_request()) {
   if($_POST['password'] === $_POST['password_confirm']) {
     // If password matches, check for existing user
     $existing_query = "SELECT COUNT(*) as count FROM member WHERE username = '" . $_POST['username'] . "'";
-    $existing_res = mysqli_query($db, $existing_query);
+    $existing_res = mysqli_query($connection, $existing_query);
 
     // If the count is not 0, that means an account with the same username already exists
     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
@@ -40,19 +43,19 @@ if(is_post_request()) {
       echo "<h1>".$_POST['username']."</h1>";
 
       $insert_user_query = "INSERT INTO member(username, email, hashed_password, first_name, last_name) VALUES (
-                            '" . mysqli_real_escape_string($db, $_POST['username'])  . "',
-                            '" . mysqli_real_escape_string($db, $_POST['email']) . "',
-                            '" . mysqli_real_escape_string($db, $hashed_password) . "',
-                            '" . mysqli_real_escape_string($db, $_POST['first_name']) . "',
-                            '" . mysqli_real_escape_string($db, $_POST['last_name']) . "')";
+                            '" . mysqli_real_escape_string($connection, $_POST['username'])  . "',
+                            '" . mysqli_real_escape_string($connection, $_POST['email']) . "',
+                            '" . mysqli_real_escape_string($connection, $hashed_password) . "',
+                            '" . mysqli_real_escape_string($connection, $_POST['first_name']) . "',
+                            '" . mysqli_real_escape_string($connection, $_POST['last_name']) . "')";
 
-      if(mysqli_query($db, $insert_user_query)) {
+      if(mysqli_query($connection, $insert_user_query)) {
         // INSERT is successful, save a session then redirect to dashboard
         $_SESSION['username'] = $_POST['username'];
         redirect_to('members.php');
       } else {
         // Display the mysql error if failed
-        array_push($errors, mysqli_error($db));
+        array_push($errors, mysqli_error($connection));
       }
     }
   } else {
@@ -66,7 +69,7 @@ if(is_post_request()) {
 ?>
 
 <?php $page_title = 'Register'; ?>
-<?php include(SHARED_PATH . '/../utilities/header.php'); ?>
+<?php include('utilities/header.php'); ?>
 
 <div id="content">
   <h1>Register</h1>
@@ -90,4 +93,4 @@ if(is_post_request()) {
   </form>
 </div>
 
-<?php include(SHARED_PATH . '/../utilities/footer.php'); ?>
+<?php include('utilities/footer.php'); ?>

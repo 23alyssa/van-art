@@ -1,5 +1,10 @@
 <?php
-require_once('private/initialize.php');
+
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+
+require_once('utilities/functions.php');
 
 
 // TODO: Remove the username session

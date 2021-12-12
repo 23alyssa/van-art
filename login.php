@@ -1,5 +1,12 @@
 <?php
-require_once('private/initialize.php');
+
+ob_start(); // output buffering is turned on
+
+session_start(); // turn on sessions
+require_once('utilities/functions.php');
+
+require('utilities/db.php');
+$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
 $errors = [];
 $username = '';
@@ -18,7 +25,7 @@ if(is_post_request()) {
   if(!empty($_POST['username']) && !empty($_POST['password'])) {
     // Write a query to retrieve the hashed_password
     $user_query = "SELECT hashed_password FROM member WHERE username = '" . $_POST['username'] . "'";
-    $user_res = mysqli_query($db, $user_query);
+    $user_res = mysqli_query($connection, $user_query);
 
     // If there is no record, then it should just display the error message
      if(mysqli_num_rows($user_res) != 0) {
@@ -48,7 +55,7 @@ if(is_post_request()) {
 ?>
 
 <?php $page_title = 'Log in'; ?>
-<?php include(SHARED_PATH . '/../utilities/header.php'); ?>
+<?php include('utilities/header.php'); ?>
 
 <div id="content">
   <h1>Log in</h1>
@@ -65,4 +72,4 @@ if(is_post_request()) {
 
 </div>
 
-<?php include(SHARED_PATH . '/../utilities/footer.php'); ?>
+<?php include('utilities/footer.php'); ?>
