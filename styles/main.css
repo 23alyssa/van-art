@@ -12527,10 +12527,18 @@ textarea.form-control-lg {
 }
 
 .img-display {
-  height: 400px;
-  /* The height is 400 pixels */
+  border-radius: 25px;
   width: 100%;
-  /* The width is the width of the web page */
+  height: 16vw;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.img-display-lg {
+  border-radius: 25px;
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .img-display-sm {
