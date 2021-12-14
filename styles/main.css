@@ -12572,3 +12572,15 @@ body {
   border-bottom: 1px dashed #efefef;
   margin-bottom: 25px;
 }
+
+.carousel-inner > .item > img {
+  width: 640px;
+  height: 360px;
+}
+
+.carousel-size {
+  height: 50%;
+  width: 100% !important;
+  -o-object-fit: cover;
+     object-fit: cover;
+}

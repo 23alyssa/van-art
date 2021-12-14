@@ -105,7 +105,7 @@ function form_end() {
             >
             <div class="card-body d-flex flex-column justify-content-between">
                 <!-- <div> -->
-                    <h5 class="text-body card-title"><?= $row[0] ?></h5>
+                    <!-- <h5 class="text-body card-title"><?php // $row[0] ?></h5> -->
                     <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
                     <?php 
                         if ($row[5]!= ""){
@@ -305,42 +305,65 @@ function form_end() {
 <?php
 // <!-- carosel -->
 // this function opens the tag for the form
-// function make_query($connect) {
-//  $query = "SELECT PhotoURL, Neighbourhood FROM `public_art` LIMIT 5;";
-//  $result = mysqli_query($connect, $query);
-//  return $result;
-// }
+function make_query($connect) {
+ $query = "SELECT PhotoURL, Neighbourhood FROM `public_art` LIMIT 4;";
+ $result = mysqli_query($connect, $query);
+ return $result;
+}
 
-// function make_slide_indicators($connect) {
-//     $output = ''; 
-//     $count = 0;
-//     $result = make_query($connect);
-//     while($row = mysqli_fetch_array($result)) {
-//         if($count == 0) {
-//              $output .= '<li data-target="#dynamic_slide_show" data-slide-to="'.$count.'" class="active"></li>';
-//         } else {
-//             $output .= ' <li data-target="#dynamic_slide_show" data-slide-to="'.$count.'"></li>';
-//         }
-//         $count = $count + 1;
-//     }
-//     return $output;
-// }
+function carousel(){
+    ?>
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <img class="d-block carousel-size" src="assets/mural.jpg" data-src="holder.js/900x400?theme=social" alt="First slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block carousel-size" src="assets/mural.jpg" data-src="holder.js/900x400?theme=industrial" alt="Second slide">
+                    </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+            </a>
+        </div>
+    <?php
+}
 
-// function make_slides($connect) {
-//     $output = '';
-//     $count = 0;
-//     $result = make_query($connect);
-//     while($row = mysqli_fetch_array($result)) {
-//         if($count == 0) {
-//             $output .= '<div class="item active">';
-//         } else {
-//             $output .= '<div class="item">';
-//         }
-//         $output .= '<img src='.$row["PhotoURL"].' alt='.$row["Neighbourhood"].' /> <div class="carousel-caption"><h3>'.$row["Neighbourhood"].'</h3></div></div>';
-//         $count = $count + 1;
-//     }
-//  return $output;
-// }
+function make_slide_indicators($connect) {
+    $output = ''; 
+    $count = 0;
+    $result = make_query($connect);
+    while($row = mysqli_fetch_array($result)) {
+        if($count == 0) {
+             $output .= '<li data-target="#dynamic_slide_show" data-slide-to="'.$count.'" class="active"></li>';
+        } else {
+            $output .= ' <li data-target="#dynamic_slide_show" data-slide-to="'.$count.'"></li>';
+        }
+        $count = $count + 1;
+    }
+    return $output;
+}
+
+function make_slides($connect) {
+    $output = '';
+    $count = 0;
+    $result = make_query($connect);
+    while($row = mysqli_fetch_array($result)) {
+        if($count == 0) {
+            $output .= '<div class="item active">';
+        } else {
+            $output .= '<div class="item">';
+        }
+        $output .= '<img src='.$row["PhotoURL"].' alt='.$row["Neighbourhood"].' /> <div class="carousel-caption"><h3>'.$row["Neighbourhood"].'</h3></div></div>';
+        $count = $count + 1;
+    }
+ return $output;
+}
 
 
 

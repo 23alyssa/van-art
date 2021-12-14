@@ -94,10 +94,13 @@ require('utilities/functions.php');
     if (!isset($year)) {
         $year = "";
     } 
-
-
-
 ?>
+
+<?php
+    // echo "<h3>Hello</h3>";
+    echo carousel($connection);
+?>
+
 
 <!-- connect to ajax file for filtering  -->
 <script src="ajaxfilter.js"></script> 
