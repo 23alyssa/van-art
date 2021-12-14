@@ -96,6 +96,9 @@ require('utilities/functions.php');
                 </button>
 
                 <?php 
+                if (isset($_SESSION['username'])) {
+
+                
                 $name = $_SESSION['username'];
                 $sql = "SELECT user_id FROM member WHERE username='$name'";
                 $result = $connection ->query($sql);
@@ -120,10 +123,10 @@ require('utilities/functions.php');
                         } else {
                         echo "failed";
                         }
+                    }
                 }
-            }
                 
-
+            }
                 ?>
                 </form>
 
