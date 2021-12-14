@@ -70,9 +70,8 @@ if (!empty($_POST['post'])) {
 
     $artIDpass = $_GET['RegistryID'];
 
-    // populate the dropdown with all the types for users to pick from 
-    $detailsQuery = "SELECT public_art.RegistryID, public_art.ArtistProjectStatement, public_art.Type, public_art.Status, public_art.SiteAddress, public_art.PrimaryMaterial, public_art.PhotoURL, public_art.Neighbourhood, public_art.LocationOnsite, public_art.Geom, public_art.DescriptionOfwork, public_art.Artists, public_art.PhotoCredits, public_art.YearOfInstallation
-    FROM `public_art` 
+    // read database 
+    $detailsQuery = "SELECT public_art.RegistryID, public_art.ArtistProjectStatement, public_art.Type, public_art.Status, public_art.SiteAddress, public_art.PrimaryMaterial, public_art.PhotoURL, public_art.Neighbourhood, public_art.LocationOnsite, public_art.Geom, public_art.DescriptionOfwork, public_art.Artists, public_art.PhotoCredits, public_art.YearOfInstallation, artists.FirstName, artists.LastName FROM `public_art` INNER JOIN artists ON public_art.Artists=artists.ArtistID 
     WHERE public_art.RegistryID='$artIDpass';";
     $detailsQueryResult = mysqli_query($connection, $detailsQuery);
 
@@ -101,8 +100,8 @@ if (!empty($_POST['post'])) {
     <div class="mt-5">
         <div class="row pt-5">
             <sidebar class="col-6">
-                <h1><?php echo $detailsOpts['RegistryID'];?></h1>
-                <h4><?php echo $detailsOpts['YearOfInstallation'];?>  |  <?php echo $detailsOpts['Neighbourhood'];?>  |  <?php echo $detailsOpts['Artists'];?></h4>
+                <!-- <h1><?php //echo $detailsOpts['RegistryID'];?></h1> -->
+                <h4><?php echo $detailsOpts['YearOfInstallation'];?>  |  <?php echo $detailsOpts['Neighbourhood'];?>  |  <?php echo $detailsOpts['FirstName']. " " .$detailsOpts['LastName'] ;?></h4>
 
                 <ul class="list-unstyled">
                     <li>Type: <?php echo $detailsOpts['Type'];?></li>
@@ -116,22 +115,17 @@ if (!empty($_POST['post'])) {
                 </button>
 
                 <?php 
-                
-                
-                if (is_post_request()) {
-                    if (!isset($_SESSION['username'])) {
-                        redirect_to("login.php");
-                    } else {
-                    $name = $_SESSION['username'];
-                    $sql = "SELECT user_id FROM member WHERE username='$name'";
-                    $result = $connection ->query($sql);
-                    $row = mysqli_fetch_assoc($result);
-                    $user_id = $row['user_id'];
-                    $art_id = $detailsOpts['RegistryID'];
-                    // echo $user_id. " and " . $art_id;
-                    $errors = [];
+                $name = $_SESSION['username'];
+                $sql = "SELECT user_id FROM member WHERE username='$name'";
+                $result = $connection ->query($sql);
+                $row = mysqli_fetch_assoc($result);
+                $user_id = $row['user_id'];
+                $art_id = $detailsOpts['RegistryID'];
+                // echo $user_id. " and " . $art_id;
+                $errors = [];
 
-                    $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                if (is_post_request()) {
                     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
                     $existing_res = mysqli_query($connection, $existing_query);
 
@@ -145,9 +139,40 @@ if (!empty($_POST['post'])) {
                         } else {
                         echo "failed";
                         }
-                    }
                 }
-                }
+            }
+                
+                
+                // if (is_post_request()) {
+                //     if (!isset($_SESSION['username'])) {
+                //         redirect_to("login.php");
+                //     } else {
+                //     $name = $_SESSION['username'];
+                //     $sql = "SELECT user_id FROM member WHERE username='$name'";
+                //     $result = $connection ->query($sql);
+                //     $row = mysqli_fetch_assoc($result);
+                //     $user_id = $row['user_id'];
+                //     $art_id = $detailsOpts['RegistryID'];
+                //     // echo $user_id. " and " . $art_id;
+                //     $errors = [];
+
+                //     $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                //     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
+                //     $existing_res = mysqli_query($connection, $existing_query);
+
+                //     // If the count is not 0, that means already in favorites
+                //     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+                //     array_push($errors, 'already added to favorites');
+                //     echo "Already in Favorites";
+                //     } else {
+                //     if ($connection->query($insertsql) === TRUE) {
+                //         echo "data inserted";
+                //         } else {
+                //         echo "failed";
+                //         }
+                //     }
+                // }
+                // }
                 
 
                 ?>
@@ -289,7 +314,7 @@ if (!empty($_POST['post'])) {
             </div>
             <div id="comments" class="<?php echo $comment_active ?>">
             <h3 class="mt-5">Comments</h3>
-                <div class="container">
+                <div class="container mb-5">
                 <?php 
 
                     //write the comment form form users

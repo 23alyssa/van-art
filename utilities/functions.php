@@ -232,6 +232,12 @@ function form_end() {
                 </span>
                 <strong class="text-primary"><?php echo $name; ?></strong>
                 <p><?php echo $message; ?></p>
+                <?php 
+                    if ($user == $user_id){
+                        echo "<p class=\"text-secondary\">Edit</p>";
+                    }
+                        
+                ?>
             </div>
         </li>
         <?php
