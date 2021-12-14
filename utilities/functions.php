@@ -151,6 +151,9 @@ function form_end() {
                 for($page = 1; $page<= $number_of_page; $page++) {  
                     echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=$page\">$page</a></li>";   
                 }  
+                //add to href
+                //jquery a tag page link for loop - take the href attribution
+                //page &
                  
             ?>
             <a class="page-link" 

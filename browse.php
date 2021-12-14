@@ -127,6 +127,8 @@ require('utilities/functions.php');
 
                     //  include('browse-action.php');
 
+                    // browse.php?page=1&type=TYPE1,TYPE2&neibourhood=N1,N2
+
                     $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
                     
                     $resultFilter = mysqli_query($connection, $sql);
@@ -166,42 +168,10 @@ require('utilities/functions.php');
                     
                     echo $output;
                     
-                    // paging($page, $number_of_page, $page);
+                    paging($page, $number_of_page, $page);
 
                     ?> 
-                    <nav aria-label="Browse additional pages" class="table-responsive mt-5">
-                            <ul class="pagination justify-content-center flex-wrap" id="paginate">
-                                <li class="page-item">
-                                <a class="page-link" 
-                                <?php 
-                                        $prev = $page-1;
-                                        echo "href = \"browse.php?page=$prev\" ";
-                                ?> 
-                                aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                </li>
-                                <?php 
-
-                                    //display the link of the pages in URL  
-                                    for($page = 1; $page<= $number_of_page; $page++) {  
-                                        echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=$page\">$page</a></li>";   
-                                    }  
-                                    
-                                ?>
-                                <a class="page-link" 
-                                    <?php 
-                                        $next = $page+1;
-                                        echo "href = \"browse.php?page=$next\"";
-                                    ?> 
-                                aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                                </li>
-                            </ul>
-                        </nav>
+                    <!--  -->
                     <?php
                     ?>
                 </div>

@@ -168,6 +168,7 @@ require('utilities/functions.php');
             <li class="active m-2"><a data-toggle="tab" href="#location">Location</a></li>
             <li class="m-2"><a data-toggle="tab" href="#description">Description</a></li>
             <li class="m-2"><a data-toggle="tab" href="#artist-stat">Artist Statment</a></li>
+            <li class="m-2"><a data-toggle="tab" href="#comments">Comments</a></li>
 
         </ul>
 
@@ -253,6 +254,18 @@ require('utilities/functions.php');
             </div>
             <div id="artist-stat" class="tab-pane fade">
                 <h3 class="mt-5">Artist Statment</h3>
+                <?php 
+                if ($detailsOpts['ArtistProjectStatement'] ==""){
+                    echo "<h5 class=\"mb-5\">No artist statement avaliable</h5>";
+                } else {
+                    echo "<p class=\"mb-5\">";
+                    echo $detailsOpts['ArtistProjectStatement'];
+                    echo "</p>";
+                }
+                ?>
+            </div>
+            <div id="comments" class="tab-pane fade">
+                <h3 class="mt-5">Comments</h3>
                 <?php 
                 if ($detailsOpts['ArtistProjectStatement'] ==""){
                     echo "<h5 class=\"mb-5\">No artist statement avaliable</h5>";
