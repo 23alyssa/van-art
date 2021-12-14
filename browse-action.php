@@ -24,19 +24,25 @@ require('utilities/functions.php');
 //  echo "connected";
 
 
-if( isset($_GET['action'])) {
+if( isset($_GET['action']) || isset($_GET['action2'])) {
     $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
-    
 
     if( isset($_GET['types'])) {
         $types = implode("','", $_GET['types']);
-        $sql .= "AND public_art.Type IN('".$types."')";
+        $sql .= " AND public_art.Type IN('".$types."')";
     }
 
     if( isset($_GET['neighbourhood'])) {
         $neighbourhood = implode("','", $_GET['neighbourhood']);
-        $sql .= "AND public_art.Neighbourhood IN('".$neighbourhood."')";
+        $sql .= " AND public_art.Neighbourhood IN('".$neighbourhood."')";
     }
+
+    if( isset($_GET['year'])) {
+        $year = implode("','", $_GET['year']);
+        $sql .= " AND public_art.YearOfInstallation IN('".$year."')";
+    }
+
+    echo $sql;
 
     $resultFilter = mysqli_query($connection, $sql);
     
@@ -61,7 +67,7 @@ if( isset($_GET['action'])) {
     $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
 
     $resultFilter = mysqli_query($connection, $sql);
-    echo $sql; 
+    // echo $sql; 
     echo "count:" .mysqli_num_rows($resultFilter);
     
 

@@ -110,7 +110,7 @@ require('utilities/functions.php');
                     <?php  
                         // display and populate the filters from the stored array queries 
                         form_start(); 
-                        form_dropdown('Year Install: ', 'year', $yearOpts, $yearOpts, $year);
+                        form_dropdown('Year Install: ', 'year', $yearOpts, $yearOpts, $year, 'year');
                         form_check('Type:','type[]', $typeOpts, $typeOpts, $type, 'types');
                         form_check('Neighbourhood: ', 'neighbourhood[]', $neighbourhoodOpts, $neighbourhoodOpts, $neighbourhood, 'neighbourhood');
                         form_end();
@@ -118,7 +118,7 @@ require('utilities/functions.php');
             </sidebar>
             <div class="col-9"> 
                 <div class="row" id="result">
-                    <h3 class="text-center" id="textChange">All Artwork</h3>
+                    <h3 class="text-center textChange" id="textChange">All Artwork</h3>
                     <?php
                     //Card Information: -----
 

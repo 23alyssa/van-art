@@ -42,25 +42,25 @@ function form_check_option($text, $varname, $opt, $get, $id) {
 }
 
 // this function creates the dropdown menu according to the options 
-function form_dropdown($label,$varname,$options,$texts, $get) {
+function form_dropdown($label,$varname,$options,$texts, $get, $id) {
     global $$varname;
     echo "<div class=\"form-group mt-4\">";
     echo "<label for=\"$varname\">$label</label>";
-    echo "<select class=\"form-select\" name=\"$varname\"";
+    echo "<select class=\"form-select art_check\" id=\"$id\" name=\"$varname\"";
     echo ">\n";
     echo "<option value=\"\" disabled selected>Select your option</option>";
 
     $i = 0;
     foreach($options as $opt) 
-        dropdown_option($texts[$i++],$varname, $opt, $get);
+        dropdown_option($texts[$i++],$varname, $opt, $get, $id);
     echo "</select></div>";
 }
 
 
 // this function populates the dropdown with different options - is used within the form_dropdown function
-function dropdown_option($text,$varname, $opt, $get) {
+function dropdown_option($text,$varname, $opt, $get, $id) {
     global $$varname;
-    echo "<option value=\"$opt\" ";
+    echo "<option class=\"art_check\" value=\"$opt\" ";
      //store the selected option after submitting form
     if(isset($get)) {
         if($get == $opt) {
