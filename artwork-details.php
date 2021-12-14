@@ -50,6 +50,24 @@ require('utilities/functions.php');
 // - photo credit *
 // - year of install * 
 
+$comment = "";
+$sqlComment ="";
+$comment_active ="tab-pane fade";
+$location_active ="tab-pane fade in show active";
+
+if (!empty($_POST['post'])) {
+        
+    // get and initialize the varables from the form once submitted
+    if( isset($_POST['comment'])) {
+        $comment=($_POST['comment']); 
+
+        $comment_active = "tab-pane fade in show active";
+        $location_active ="tab-pane fade";
+
+    } 
+  
+}
+
     $artIDpass = $_GET['RegistryID'];
 
     // populate the dropdown with all the types for users to pick from 
@@ -67,6 +85,8 @@ require('utilities/functions.php');
             $detailsOpts = $row;
         }    
     }
+
+    $registryID = $detailsOpts['RegistryID'];
 
     // echo "<h1> Hello World </h1>";
     // echo "<pre>";
@@ -170,7 +190,7 @@ require('utilities/functions.php');
         </ul>
 
         <div class="tab-content">
-            <div id="location" class="tab-pane fade in show active">
+            <div id="location" class="<?php echo $location_active ?>">
                 <h3 class="mt-5">Map</h3>
                 <!-- <p class="mb-5"><?php echo $detailsOpts['Geom'];?></p> -->
                 
@@ -261,22 +281,60 @@ require('utilities/functions.php');
                 }
                 ?>
             </div>
-            <div id="comments" class="tab-pane fade">
-                <h3 class="mt-5">Comments</h3>
+            <div id="comments" class="<?php echo $comment_active ?>">
+            <h3 class="mt-5">Comments</h3>
+                <div class="container">
                 <?php 
-                if ($detailsOpts['ArtistProjectStatement'] ==""){
-                    echo "<h5 class=\"mb-5\">No artist statement avaliable</h5>";
-                } else {
-                    echo "<p class=\"mb-5\">";
-                    echo $detailsOpts['ArtistProjectStatement'];
-                    echo "</p>";
-                }
+
+                    //write the comment form form users
+                    comment_form($registryID, $name);
+                     
+                    //insert the newest comment into the database before displaying all comments
+                    if( isset($_POST['comment'])) {
+                        $sqlComment = "INSERT INTO comment (message, art_id, user_id)
+                                    VALUES ('$comment', '$registryID', '$user_id');";
+
+                        // echo $sqlComment;
+
+                        if(mysqli_query($connection, $sqlComment)){
+                            // echo "<h3>Succesfully added</h3>"; 
+                        } else {
+                            echo "Opps there was an erorr: . " 
+                                . mysqli_error($connection);
+                        }
+                    } 
+
+                    //read and format all the comments
+                    $sqlReadComment = "SELECT comment.user_id, comment.art_id, comment.message, comment.timestamp, member.username FROM `comment` INNER JOIN member ON member.user_id=comment.user_id WHERE art_id = $registryID ORDER BY comment.timestamp DESC;";
+
+                    $resultReadComment = mysqli_query($connection, $sqlReadComment);
+        
+                    echo "<ul class=\"media-list list-group\">";
+                    //display the retrieved result on the webpage  
+                    if (mysqli_num_rows($resultReadComment) > 0) {
+                        while ($row = mysqli_fetch_array($resultReadComment)) {
+                            comment_display($row['timestamp'], $row['username'], $row['message'], $user_id, $row['user_id']);
+                            // echo "<pre>";
+                            // print_r($row);
+                            // echo "</pre>";
+                        }    
+                    } else {
+                        echo "<h4 class=\"mt-5 mb-5\">Be the first to write a comment!</h4>";
+                    }
+                    echo "</ul>";
+                    comment_end();
                 ?>
+                </div>
             </div>
         </div>
         </div>
     </div>
 </section>
+
+<section>
+    
+</section
+
 
 
 

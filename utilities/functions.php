@@ -171,6 +171,73 @@ function form_end() {
 
 <?php } ?>
 
+<?php 
+
+    function comment_form($registryID, $username){
+        ?>
+        <section class="container">
+            <div class="row bootstrap snippets bootdeys">
+                <div class="col-md-8 col-sm-12">
+                    <div class="comment-wrapper">
+                        <div class="panel panel-info">
+                            <h5 class="panel-heading">
+                                <?php echo $username ?>
+                            </h5>
+                            <div class="panel-body">
+                            <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>" method="post">
+                                <textarea class="form-control" name="comment" type="text" placeholder="Write a comment..." rows="3"></textarea>
+                                <br>
+                                <input type="submit" name="post" value="Post" class="btn btn-primary pull-right">
+                                <div class="clearfix"></div>
+                            </form>
+                            <?php 
+
+                            ?>
+                        
+
+        <?php
+    }
+?>
+
+<?php 
+
+    function comment_end(){
+    echo"</div>";
+    echo"</div>";
+    echo"</div>";
+    echo"</div>";
+    echo"</div>";
+    echo"</section>";
+    }
+
+?>
+
+<?php 
+
+    function comment_display($time, $name, $message, $user, $user_id){
+        ?>
+        <li class="media list-group-item mb-0
+        
+        <?php 
+            if ($user == $user_id){
+                echo "bg-alt";
+            }
+                
+        ?>
+        
+        ">
+            <div class="media-body">
+                <span class="text-muted pull-right">
+                    <small class="text-muted"><?php echo $time; ?></small>
+                </span>
+                <strong class="text-primary"><?php echo $name; ?></strong>
+                <p><?php echo $message; ?></p>
+            </div>
+        </li>
+        <?php
+    }
+?>
+
 
 <?php 
     // Derek's function code

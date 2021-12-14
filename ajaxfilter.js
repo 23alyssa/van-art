@@ -26,12 +26,12 @@ $(document).ready(function(){
         })
     });
 
-    $('.page-link a').ready(function() {
-        event.preventDefault();
-        var get = $(this).attr('href');
-        // alert(get);
-        console.log(get);    
-    });  
+    // $('.page-link a').ready(function() {
+    //     event.preventDefault();
+    //     var get = $(this).attr('href');
+    //     // alert(get);
+    //     console.log(get);    
+    // });  
 
     function get_filter_text(text_id) {
         var filterData = [];
