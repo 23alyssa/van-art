@@ -116,17 +116,22 @@ if (!empty($_POST['post'])) {
                 </button>
 
                 <?php 
-                $name = $_SESSION['username'];
-                $sql = "SELECT user_id FROM member WHERE username='$name'";
-                $result = $connection ->query($sql);
-                $row = mysqli_fetch_assoc($result);
-                $user_id = $row['user_id'];
-                $art_id = $detailsOpts['RegistryID'];
-                // echo $user_id. " and " . $art_id;
-                $errors = [];
-
-                $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                
+                
                 if (is_post_request()) {
+                    if (!isset($_SESSION['username'])) {
+                        redirect_to("login.php");
+                    } else {
+                    $name = $_SESSION['username'];
+                    $sql = "SELECT user_id FROM member WHERE username='$name'";
+                    $result = $connection ->query($sql);
+                    $row = mysqli_fetch_assoc($result);
+                    $user_id = $row['user_id'];
+                    $art_id = $detailsOpts['RegistryID'];
+                    // echo $user_id. " and " . $art_id;
+                    $errors = [];
+
+                    $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
                     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
                     $existing_res = mysqli_query($connection, $existing_query);
 
@@ -140,8 +145,9 @@ if (!empty($_POST['post'])) {
                         } else {
                         echo "failed";
                         }
+                    }
                 }
-            }
+                }
                 
 
                 ?>
