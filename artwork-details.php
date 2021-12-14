@@ -86,6 +86,7 @@ if (!empty($_POST['post'])) {
     }
 
     $registryID = $detailsOpts['RegistryID'];
+    $_SESSION['art'] = $registryID;
 
     // echo "<h1> Hello World </h1>";
     // echo "<pre>";
@@ -109,78 +110,84 @@ if (!empty($_POST['post'])) {
                     <li>Site Address: <?php echo $detailsOpts['SiteAddress'];?></li>
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
-                <form method="post" action="">
+                <form method="post" action="favorites.php">
                 <button type="submit" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
                     <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
                 </button>
 
                 <?php 
-                $name = $_SESSION['username'];
-                $sql = "SELECT user_id FROM member WHERE username='$name'";
-                $result = $connection ->query($sql);
-                $row = mysqli_fetch_assoc($result);
-                $user_id = $row['user_id'];
-                $art_id = $detailsOpts['RegistryID'];
-                // echo $user_id. " and " . $art_id;
-                $errors = [];
+            //     $name = $_SESSION['username'];
+            //     $sql = "SELECT user_id FROM member WHERE username='$name'";
+            //     $result = $connection ->query($sql);
+            //     $row = mysqli_fetch_assoc($result);
+            //     $user_id = $row['user_id'];
+            //     $art_id = $detailsOpts['RegistryID'];
+            //     // echo $user_id. " and " . $art_id;
+            //     $errors = [];
 
-                $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
-                if (is_post_request()) {
-                    $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
-                    $existing_res = mysqli_query($connection, $existing_query);
+            //     $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+            //     if (is_post_request()) {
+            //         $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
+            //         $existing_res = mysqli_query($connection, $existing_query);
 
-                    // If the count is not 0, that means already in favorites
-                    if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
-                    array_push($errors, 'already added to favorites');
-                    echo "Already in Favorites";
-                    } else {
-                    if ($connection->query($insertsql) === TRUE) {
-                        echo "data inserted";
-                        } else {
-                        echo "failed";
-                        }
-                }
-            }
+            //         // If the count is not 0, that means already in favorites
+            //         if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+            //         array_push($errors, 'already added to favorites');
+            //         echo "Already in Favorites";
+            //         } else {
+            //         if ($connection->query($insertsql) === TRUE) {
+            //             echo "data inserted";
+            //             } else {
+            //             echo "failed";
+            //             }
+            //     }
+            // }
                 
                 
                 // if (is_post_request()) {
-                //     if (!isset($_SESSION['username'])) {
-                //         redirect_to("login.php");
-                //     } else {
-                //     $name = $_SESSION['username'];
-                //     $sql = "SELECT user_id FROM member WHERE username='$name'";
-                //     $result = $connection ->query($sql);
-                //     $row = mysqli_fetch_assoc($result);
-                //     $user_id = $row['user_id'];
+                    if (isset($_SESSION['username'])) {
+                        $name = $_SESSION['username'];
+                        $sql = "SELECT user_id FROM member WHERE username='$name'";
+                        $result = $connection ->query($sql);
+                        $row = mysqli_fetch_assoc($result);
+                        $user_id = $row['user_id'];
+                    } else {
+                        $user_id = "";
+                    }
+                    
                 //     $art_id = $detailsOpts['RegistryID'];
                 //     // echo $user_id. " and " . $art_id;
                 //     $errors = [];
 
-                //     $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
-                //     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
-                //     $existing_res = mysqli_query($connection, $existing_query);
+                    // $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                    $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$registryID."'";
+                    $existing_res = mysqli_query($connection, $existing_query);
 
-                //     // If the count is not 0, that means already in favorites
-                //     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
-                //     array_push($errors, 'already added to favorites');
-                //     echo "Already in Favorites";
-                //     } else {
-                //     if ($connection->query($insertsql) === TRUE) {
-                //         echo "data inserted";
-                //         } else {
-                //         echo "failed";
-                //         }
-                //     }
-                // }
-                // }
+                    // If the count is not 0, that means already in favorites
+                    if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+                    echo "Added to Favorites";
+                    } 
                 
-
+                // }
                 ?>
                 </form>
 
-                <form action="artwork-details.php" method="post" class="mt-auto">
-                    <button type="button" name="vote" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-dark">
-                        <i class="far fa-arrow-alt-circle-up card-link"></i> Upvote
+                <form action="upvote.php" method="post" class="mt-auto">
+                    <button type="submit" name="vote" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-dark">
+                        <i class="far fa-arrow-alt-circle-up card-link"></i> 
+                    
+
+                    <?php 
+                        $upvotesql = "SELECT COUNT(*) as count FROM upvote WHERE art_id='".$registryID."'";
+                        $existing_upvote = mysqli_query($connection, $upvotesql);
+                        
+                        $numvotes = mysqli_fetch_assoc($existing_upvote)['count'];
+                        if ($numvotes == 1) {
+                            echo $numvotes." Upvote";
+                        } else {
+                            echo $numvotes. " Upvotes";
+                        }
+                    ?>
                     </button>
                 </form>
                 <!-- <a class="ml-3"><i class="upvote far fa-arrow-alt-circle-up fa-2x"></i></a> -->
@@ -316,24 +323,30 @@ if (!empty($_POST['post'])) {
             <h3 class="mt-5">Comments</h3>
                 <div class="container mb-5">
                 <?php 
-
+                    
                     //write the comment form form users
-                    comment_form($registryID, $name);
-                     
-                    //insert the newest comment into the database before displaying all comments
-                    if( isset($_POST['comment'])) {
-                        $sqlComment = "INSERT INTO comment (message, art_id, user_id)
-                                    VALUES ('$comment', '$registryID', '$user_id');";
+                    comment_form($registryID);
+                    
 
-                        // echo $sqlComment;
+                    if (is_post_request()) {
+                        $user_id = get_user_id($connection);
+                        //insert the newest comment into the database before displaying all comments
+                        if( isset($_POST['comment'])) {
+                            $sqlComment = "INSERT INTO comment (message, art_id, user_id)
+                                        VALUES ('$comment', '$registryID', '$user_id');";
 
-                        if(mysqli_query($connection, $sqlComment)){
-                            // echo "<h3>Succesfully added</h3>"; 
-                        } else {
-                            echo "Opps there was an erorr: . " 
-                                . mysqli_error($connection);
-                        }
-                    } 
+                            // echo $sqlComment;
+
+                            if(mysqli_query($connection, $sqlComment)){
+                                // echo "<h3>Succesfully added</h3>"; 
+                            } else {
+                                echo "Opps there was an erorr: . " 
+                                    . mysqli_error($connection);
+                            }
+                        } 
+                    }
+                
+                    
 
                     //read and format all the comments
                     $sqlReadComment = "SELECT comment.user_id, comment.art_id, comment.message, comment.timestamp, member.username FROM `comment` INNER JOIN member ON member.user_id=comment.user_id WHERE art_id = $registryID ORDER BY comment.timestamp DESC;";

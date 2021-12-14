@@ -173,7 +173,7 @@ function form_end() {
 
 <?php 
 
-    function comment_form($registryID, $username){
+    function comment_form($registryID){
         ?>
         <section class="container">
             <div class="row bootstrap snippets bootdeys">
@@ -181,7 +181,14 @@ function form_end() {
                     <div class="comment-wrapper">
                         <div class="panel panel-info">
                             <h5 class="panel-heading">
-                                <?php echo $username ?>
+                                <?php 
+                                    if (!isset($_SESSION['username'])) {
+                                        $username = "Please Login to Comment.";
+                                    } else {
+                                        $username = $_SESSION['username'];
+                                    }
+                                echo $username;
+                                ?>
                             </h5>
                             <div class="panel-body">
                             <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>" method="post">
@@ -219,6 +226,11 @@ function form_end() {
         <li class="media list-group-item mb-0
         
         <?php 
+            // if (!isset($_SESSION['username'])) {
+            //     $user = "";
+            // } else {
+            //     $user = isset($_SESSION['username']);
+            // }
             if ($user == $user_id){
                 echo "bg-alt";
             }
@@ -299,6 +311,18 @@ function form_end() {
         $output .= "</div>";
         }
         return $output;
+    }
+
+    function get_user_id($connection) {
+        if (!isset($_SESSION['username'])) {
+            redirect_to("login.php");
+        } else {
+        $name = $_SESSION['username'];
+        $sql = "SELECT user_id FROM member WHERE username='$name'";
+        $result = $connection ->query($sql);
+        $row = mysqli_fetch_assoc($result);
+        return $row['user_id'];
+        }
     }
 ?>
 

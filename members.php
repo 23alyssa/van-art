@@ -42,6 +42,39 @@ require('utilities/functions.php');
   <h1> Favorites </h1>
 </div>
 
+<section class="container-fluid bg-alt">
+    <div class="container">
+        <div class="row pt-5">
+            <div class="col-9"> 
+                <div class="row" id="result">
+                    <h3 class="text-center" id="textChange">Favorites</h3>
+                    <?php
+                    
+                    $user = $row['user_id'];
+                    $favsql = "SELECT art_id FROM favorite WHERE user_id = '$user' ORDER BY timestamp DESC";
+                    $favresults = $connection -> query($favsql);
+                    while ($favrow = $favresults -> fetch_array(MYSQLI_ASSOC)) {
+                      $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
+                      $results = mysqli_query($connection, $sql);
+                      if ($results != NULL) {
+                        while ($row = mysqli_fetch_array($results)) {
+                            $output =createCard($row);
+                            // print_r($row);
+                        }    
+                    }
+                    }
+
+                    ?>
+                </div>
+            </div>
+        </div>
+        <?php
+            
+        ?>
+    </div>
+
+</section>
+
 
 
 <?php include('utilities/footer.php'); ?>
