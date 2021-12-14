@@ -90,8 +90,8 @@ require('utilities/functions.php');
                     <li>Site Address: <?php echo $detailsOpts['SiteAddress'];?></li>
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
-                
-                <button type="button" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
+                <form method="post" action="">
+                <button type="submit" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
                     <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
                 </button>
 
@@ -101,20 +101,31 @@ require('utilities/functions.php');
                 $result = $connection ->query($sql);
                 $row = mysqli_fetch_assoc($result);
                 $user_id = $row['user_id'];
-                $art_id = $artIDpass;
-                echo $user_id;
+                $art_id = $detailsOpts['RegistryID'];
+                // echo $user_id. " and " . $art_id;
+                $errors = [];
 
-                $insertsql = "INSERT INTO favorite ('user_id', 'art_id') VALUES ('$user_id', '$art_id')";
+                $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                if (is_post_request()) {
+                    $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
+                    $existing_res = mysqli_query($connection, $existing_query);
 
-                if ($connection->query($insertsql) === TRUE) {
-                echo "data inserted";
+                    // If the count is not 0, that means already in favorites
+                    if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+                    array_push($errors, 'already added to favorites');
+                    echo "Already in Favorites";
+                    } else {
+                    if ($connection->query($insertsql) === TRUE) {
+                        echo "data inserted";
+                        } else {
+                        echo "failed";
+                        }
                 }
-                else 
-                {
-                echo "failed";
-                }
+            }
+                
 
                 ?>
+                </form>
 
                 <form action="artwork-details.php" method="post" class="mt-auto">
                     <button type="button" name="vote" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-dark">
