@@ -2,11 +2,13 @@ $(document).ready(function(){
     // alert("hello"); //check is jquery library is working
 
     $("#year").on('change', function(){
-        // console.log("list item selected");
+        // detect if a year in the drop down list has been selected
+
+        //set the data
         var action2 = 'data';
         var year = [];
         year.push($(this).val());    
-        console.log(year);
+        // console.log(year);
 
         $.ajax({
             url:'browse-action.php', 
@@ -14,6 +16,7 @@ $(document).ready(function(){
             data: { action2: action2, year: year},
             success:function(response){
 
+                //add the years to the results section in browse to update the cards
                 $("#result").html(response);
 
             }
@@ -22,13 +25,18 @@ $(document).ready(function(){
       
 
     $(".art_check").click(function(){
-        // $("#loader").show();
+        //check if a filter was selected 
+        //all checkboxes have class .art_check 
+
+        //show the loading gif
+        $("#loader").show();
      
+        //set the data
         var action = 'data';
         var types = get_filter_text('types');
         var neighbourhood = get_filter_text('neighbourhood');
-        console.log(types);
-        console.log(neighbourhood);
+        // console.log(types);
+        // console.log(neighbourhood);
          
         $.ajax({
             url:'browse-action.php', 
@@ -36,35 +44,20 @@ $(document).ready(function(){
             data: {action: action, types: types, neighbourhood: neighbourhood},
             success:function(response){
 
+                //hide the loader and show the results
                 $("#result").html(response);
-                // $("#loader").hide();
+                $("#loader").hide();
                 $('.textChange').text("Filtered Artwork");
                 $("#paging").hide();
 
             }
         })
-    });
+    }); 
 
-
-
-    // $('.page-link a').ready(function() {
-    //     event.preventDefault();
-    //     var get = $(this).attr('href');
-    //     // alert(get);
-    //     console.log(get);    
-    // });  
-
+    //function to get the checkbox values
     function get_filter_text(text_id) {
         var filterData = [];
         $('#'+text_id+':checked').each(function(){
-            filterData.push($(this).val());
-        });
-        return filterData;
-    }
-
-    function get_filter_select(select_id) {
-        var filterData = [];
-        $('#'+select_id + ':selected').each(function(){
             filterData.push($(this).val());
         });
         return filterData;

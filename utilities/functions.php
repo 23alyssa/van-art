@@ -1,13 +1,10 @@
 <?php
 // this page contains all the funcitons used throughout the entire program 
 
-
-
 // this function opens the tag for the form
 function form_start() {
     echo "<div>";
-    // echo "<div class='container-fluid'>";
-    // echo "<div class='row mb-3'>";
+
 }
 
 //this function creates the checkbox for filtering
@@ -84,13 +81,15 @@ function form_end() {
 <?php function createCard(array $row) { ?>
     <!-- this class is responsible for populating the card information from the public art database -->
 
-        <div class="card col-sm-8 col-md-5 col-lg-4 col-xl-3 m-1">
+    <div class="card col-sm-8 col-md-5 col-lg-4 col-xl-3 m-1">
         <a class="text-decoration-none" <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> >
             <img height="250"
                  width="250"
                  class="card-img-top2"
                  
                  <?php 
+                 //check if the photoURL is empty - display no image
+                 //else display the photoURL
                  echo "src=\"";
                  if (count($row)>=0){
                     if($row[1] == ""){
@@ -98,98 +97,75 @@ function form_end() {
                     } else if($row[1] != "") {
                         echo $row[1];
                         echo "\"";
+                        }
                     }
-                }
                  ?>
             >
+            <!-- display the card text -->
             <div class="card-body d-flex flex-column justify-content-between">
-                <!-- <div> -->
-                    <!-- <h5 class="text-body card-title"><?php // $row[0] ?></h5> -->
-                    <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
-                    <?php 
-                        if ($row[5]!= ""){
-                            echo "<p class=\"text-body card-text\">$row[5]...</p>";
-                        } else {
-                            echo "<p class=\"text-body card-text\">No description avaliable</p>";
-                        }
-                    ?>
-                    <div>
-                        <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
-                        <?php
-                        // if ($art != 0) {
-                            // $_SESSION['favart'] = $row[0];
-                            // echo $art;
-                            // echo '<form action="" method="post" class="mt-auto">';
-                            // echo '<button type="submit" name="fav" id=" $row[2] "" class="btn btn-outline-primary">';
-                        //     echo '<i class="bi bi-bookmark-plus-fill card-link"></i> Unfavourite';
-                        //     echo '</button></form>';
-
-                        //     require('utilities/db.php');
-                        //     $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-                        //     $name = $_SESSION['username'];
-
-                        //     $sql = "DELETE FROM favorite WHERE user_id = (SELECT user_id FROM member WHERE username='$name') AND art_id = '".$art."'";
-                        //     if ($connection->query($sql) ===  TRUE) {
-                        //         echo "Record Deleted successfully";
-                        //         // redirect_to("members.php");
-                        //     } else {
-                        //         echo "error deleting record";
-                        //     }
-                        // }
-                        ?>
-                    </div>
-                <!-- </div> -->
+                <!-- display the year from the array -->
+                <p class="text-body line-height-card card-text"><?= $row[2] ?></p>
+                <?php 
+                    //if description is avaliable display it - or else inform no description
+                    if ($row[5]!= ""){
+                        echo "<p class=\"text-body card-text\">$row[5]...</p>";
+                    } else {
+                        echo "<p class=\"text-body card-text\">No description avaliable</p>";
+                    }
+                ?>
+                <div>
+                    <!-- create a custom link to the artwork details page that passes in url parameter for the registry id -->
+                    <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
+                </div>
             </div>
-            </a>
-        </div>
-    <!-- </div> -->
+        </a>
+    </div>
 <?php } ?>
 
 
-
+<!-- this function is responsible for styling, displaying, and creating the page numbers - including the links -->
 <?php function paging($page, $number_of_page, $curPage) { ?>
     <nav aria-label="Browse additional pages" class="table-responsive mt-5">
+        <!-- pages are organizaed in ul according to bootstrap documentation -->
         <ul class="pagination justify-content-center flex-wrap">
             <li class="page-item">
-            <a class="page-link" 
-            <?php 
+                <a class="page-link" 
+                <?php 
+                    //calculate the previous page number dynamically based on your current page
                     $prev = $curPage-1;
                     echo "href = \"browse.php?page=$prev\" ";
-            ?> 
-            aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
+                ?> 
+                aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
             </li>
-            <?php 
-
+            <?php
                 //display the link of the pages in URL  
                 for($page = 1; $page<= $number_of_page; $page++) {  
                     echo "<li class=\"page-item\"><a class=\"page-link\" href = \"browse.php?page=$page\">$page</a></li>";   
-                }  
-                //add to href
-                //jquery a tag page link for loop - take the href attribution
-                //page &
-                 
+                }     
             ?>
-            <a class="page-link" 
-                <?php 
-                    $next = $curPage+1;
-                    echo "href = \"browse.php?page=$next\"";
-                ?> 
-            aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
+            <li class="page-item">
+                <a class="page-link" 
+                    <?php 
+                        //calculate the next page number dynamically based on your current page
+                        $next = $curPage+1;
+                        echo "href = \"browse.php?page=$next\"";
+                    ?> 
+                aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
             </li>
         </ul>
     </nav>
 
 <?php } ?>
 
-<?php 
 
-    function comment_form($registryID){
+<!-- this function creates the comment form on the artwork deatils page - only avaliable for members -->
+<?php function comment_form($registryID){
         ?>
         <section class="container">
             <div class="row bootstrap snippets bootdeys">
@@ -198,6 +174,8 @@ function form_end() {
                         <div class="panel panel-info">
                             <h5 class="panel-heading">
                                 <?php 
+                                    //check if the user is logged into an account 
+                                    //change the heading from login information to member's username
                                     if (!isset($_SESSION['username'])) {
                                         $username = "Please Login to Comment.";
                                     } else {
@@ -207,52 +185,43 @@ function form_end() {
                                 ?>
                             </h5>
                             <div class="panel-body">
-                            <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>" method="post">
-                                <textarea class="form-control" name="comment" type="text" placeholder="Write a comment..." rows="3"></textarea>
-                                <br>
-                                <input type="submit" name="post" value="Post" class="btn btn-primary pull-right">
-                                <div class="clearfix"></div>
-                            </form>
-                            <?php 
-
-                            ?>
-                        
-
+                            <!-- create the comment form and add to url to detect the new comment -->
+                                <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>" method="post">
+                                    <textarea class="form-control" name="comment" type="text" placeholder="Write a comment..." rows="3"></textarea>
+                                    <br>
+                                    <input type="submit" name="post" value="Post" class="btn btn-primary pull-right">
+                                    <div class="clearfix"></div>
+                                </form>
+        <!-- in order to keep all the comments alligned together ending div blocks have been moved to comment_end() -->
         <?php
     }
 ?>
 
 <?php 
-
+// this funciton closes the div blocks opened in comment_form()
     function comment_end(){
-    echo"</div>";
-    echo"</div>";
-    echo"</div>";
-    echo"</div>";
-    echo"</div>";
+                        echo"</div>";
+                    echo"</div>";
+                echo"</div>";
+            echo"</div>";
+        echo"</div>";
     echo"</section>";
     }
 
 ?>
 
 <?php 
-
+    // this comment is responible for displaying comments from the database  
+    // sql query results are passed in the parameters from artwork-details.php
     function comment_display($time, $name, $message, $user, $user_id, $comment_id, $art_id){
         ?>
         <li class="media list-group-item mb-0
-        
-        <?php 
-            // if (!isset($_SESSION['username'])) {
-            //     $user = "";
-            // } else {
-            //     $user = isset($_SESSION['username']);
-            // }
-            if ($user == $user_id){
-                echo "bg-alt";
-            }
-                
-        ?>
-        
+            <?php 
+                // if the current logged in user is the owner of the comment update the background colour
+                if ($user == $user_id){
+                    echo "bg-alt";
+                }      
+            ?>
         ">
             <div class="media-body">
                 <span class="text-muted pull-right">
@@ -261,37 +230,38 @@ function form_end() {
                 <strong class="text-primary"><?php echo $name; ?></strong>
                 <p><?php echo $message; ?></p>
                 <?php 
+                    // if the current logged in user is the owner of the comment - allow them to edit or delete their comments 
+                    //using url re-writing to detect the comments (only if user own the comments)
                     if ($user == $user_id){
                         echo "<a class=\"pull-right m-1 ml-1\" href=\"artwork-details.php?RegistryID=$art_id&id-delete=$comment_id\">Delete</a>";
                         echo "<a class=\"pull-right m-1\" href=\"artwork-details.php?RegistryID=$art_id&id=$comment_id\">Edit</a>";
-                     }
-                        
+                     } 
                 ?>
             </div>
         </li>
-        <?php
-    }
-?>
+<?php } ?>
 
 <?php 
 
+//this function is responsible for opening a new form for the user to update the message of their original comment
     function comment_edit($registryID, $comment_id, $user, $user_id){
+        // double check that the logged in user is the owner of the comment - otherwise they should should not be able to update other peoples comments
         if ($user == $user_id){
         ?>
         <li class="media list-group-item mb-0
-        <?php 
-            if ($user == $user_id){
-                echo "bg-primary";
-            }     
-        ?>
+            <?php 
+                if ($user == $user_id){
+                    echo "bg-primary";
+                }     
+            ?>
         ">
             <div class="media-body">
-            <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>&id=<?php echo $comment_id ?>" method="post">
-                        <textarea class="form-control" name="comment-update" type="text" placeholder="Write a comment..." rows="3"></textarea>
-                        <br>
-                        <a class="text-dark m-1" href="artwork-details.php?RegistryID=<?php echo $registryID ?>">Close</a>
-                        <input type="submit" name="update" value="update" class="btn btn-light pull-right">
-                    </form>
+                <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>&id=<?php echo $comment_id ?>" method="post">
+                    <textarea class="form-control" name="comment-update" type="text" placeholder="Write a comment..." rows="3"></textarea>
+                    <br>
+                    <a class="text-dark m-1" href="artwork-details.php?RegistryID=<?php echo $registryID ?>">Close</a>
+                    <input type="submit" name="update" value="update" class="btn btn-light pull-right">
+                </form>
             </div>
         </li>
         <?php
@@ -301,8 +271,11 @@ function form_end() {
 
 <?php 
 
+//this function is responsible for deleting the current selected comment from the database 
     function comment_delete($connection, $idvalue, $comment_id_delete, $user, $user_id){
+        // double check the current logged in user owns the comment they was to delete - cannot delete other people's comments
         if ($user == $user_id){
+            // if their is an id to delete in the request then only delete it
             if( isset($_GET[$idvalue])) {
                 $sqlCommentDelete = "DELETE FROM comment
                 WHERE comment_id = ".$comment_id_delete.";" ;
@@ -315,6 +288,7 @@ function form_end() {
                 }
 
             }
+            //refresh the page to see the comment it now gone
             header("Refresh:0");
         }
     }

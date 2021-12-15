@@ -24,6 +24,7 @@ require('utilities/functions.php');
 
 ?>
 
+<!-- display hero section above the fold -->
 <section class="container-fluid bg-alt">
     <div class="container pb-5">
         <div class="row pt-5 pb-5">
@@ -41,6 +42,7 @@ require('utilities/functions.php');
     </div>
 </section>
 
+<!-- display about the student project information -->
 <section class="container-fluid">
     <div class="container">
         <div class="row pt-5">
@@ -54,6 +56,7 @@ require('utilities/functions.php');
     </div>
 </section>
 
+<!-- main feature 1 - find artwork  -->
 <section class="container-fluid">
     <div class="container pt-5 pb-5">
         <div class="row d-flex justify-content-center align-items-center">
@@ -68,6 +71,7 @@ require('utilities/functions.php');
     </div>
 </section>
 
+<!-- list of compelling website features -->
 <section> 
     <div class="container">
         <div class="row d-flex justify-content-center">
@@ -103,11 +107,12 @@ require('utilities/functions.php');
     </div>
 </section>
 
+<!-- members features  -->
 <section class="container-fluid">
     <div class="container pt-5 pb-5">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-5 pt-5 pb-5">
-                <h4 class="">Creat an account</h4>
+                <h4 class="">Creaet an account</h4>
                 <p>Registering with Vancouver Public Art will unlock additional features that you can use to customize your experience. Never forget a piece of art you want to visit by adding it to your favourites. Connect with other art lovers throught the comments on artwork.</p>
             </div>
             <div class="col-5 pt-5 pb-5">
@@ -117,6 +122,7 @@ require('utilities/functions.php');
     </div>
 </section>
 
+<!-- map of all public artwork in vancouver  -->
 <section class="container-fluid">
     <div class="container mb-5">
         <div class="row pt-5 mb-5">

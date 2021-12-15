@@ -29,39 +29,44 @@ require('utilities/functions.php');
             <div class="row">
                 <sidebar class="col-3">
                         <div class="m-3">
+                            <!-- display the username of loggen in user -->
                             <h3 class="mt-2 mb-1"><?php echo $_SESSION['username']?></h3>
+                            <!-- form to detect the edit information button -->
                             <form action="updatemembers.php" method="post">
                                 <?php 
                                     $username = $_SESSION['username'];
                                     $sql = "SELECT * FROM member WHERE username='$username'";
                                     $result = $connection ->query($sql);
                                     $row = mysqli_fetch_assoc($result);
+                                    // display more account details 
                                     echo "<h6>".$row['first_name']." ".$row['last_name']."<br></h6>";
                                     echo "<h6>Email: ". $row['email']. "</h6>";
                                 ?>
+                            <!-- edit information button -->
                             <input class="mt-3 btn btn-primary px-4" type="submit" value="Edit Information"/>
                             </form>
                         </div>
                 </sidebar>
                 <div class="col-9 bg-alt"> 
                     <div class="row m-5" id="result">
+                        <!-- username in the favoruties title -->
                         <h3 class="text-center mb-5"><?php echo $_SESSION['username']."'s Favourites"?></h3>
                             <?php
-                            
-                            $user = $row['user_id'];
-                            $favsql = "SELECT art_id FROM favorite WHERE user_id = '$user' ORDER BY timestamp DESC";
-                            $favresults = $connection -> query($favsql);
-                            while ($favrow = $favresults -> fetch_array(MYSQLI_ASSOC)) {
-                            $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
-                            $results = mysqli_query($connection, $sql);
-                            if ($results != NULL) {
-                                // echo $_SESSION['favart'];
-                                while ($row = mysqli_fetch_array($results)) {
-                                    $output =createCard($row);
-                                    // print_r($row);
-                                }    
-                            }
-                            }
+                                //display the favourites information from the database
+                                $user = $row['user_id'];
+                                $favsql = "SELECT art_id FROM favorite WHERE user_id = '$user' ORDER BY timestamp DESC";
+                                $favresults = $connection -> query($favsql);
+                                while ($favrow = $favresults -> fetch_array(MYSQLI_ASSOC)) {
+                                    $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
+                                    $results = mysqli_query($connection, $sql);
+                                    if ($results != NULL) {
+                                        // echo $_SESSION['favart'];
+                                        while ($row = mysqli_fetch_array($results)) {
+                                            $output =createCard($row);
+                                            // print_r($row);
+                                        }    
+                                    }
+                                }
 
                             ?>
                     </div>
@@ -123,7 +128,6 @@ require('utilities/functions.php');
     </div>
 
 </section> -->
-
 
 
 <?php include('utilities/footer.php'); ?>

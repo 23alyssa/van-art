@@ -94,7 +94,7 @@ require('utilities/functions.php');
 ?>
 
 <?php
-    // echo "<h3>Hello</h3>";
+    // create the carousel using a function and display it 
     echo carousel($connection);
 ?>
 
@@ -102,6 +102,7 @@ require('utilities/functions.php');
 <!-- connect to ajax file for filtering  -->
 <script src="ajaxfilter.js"></script> 
 
+<!-- display the filters and content cards with bootstrap styling -->
 <section class="container-fluid bg-alt">
     <div class="container">
         <div class="row pt-5">
@@ -118,19 +119,18 @@ require('utilities/functions.php');
             </sidebar>
             <div class="col-9"> 
                 <div class="row" id="result">
+                    <!-- everything under #result is in sync with ajax selector -->
                     <h3 class="text-center textChange" id="textChange">All Artwork</h3>
                     <?php
                     //Card Information: -----
 
-                    //loader 
-                    // echo "<img src=\"assets/loader.svg\" id=\"loader\" width=\"100\" style=\"display:none;\">";
+                    //loader will only show if data takes too long to load - singals to user the database is working on request
+                    echo "<img src=\"assets/loader.svg\" id=\"loader\" width=\"100\" style=\"display:none;\">";
 
-                    //  include('browse-action.php');
-
-                    // browse.php?page=1&type=TYPE1,TYPE2&neibourhood=N1,N2
-
+                    //create the default query statement to display all artworks
                     $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE public_art.RegistryID IS NOT NULL ";
                     
+                    //return the results of the query
                     $resultFilter = mysqli_query($connection, $sql);
     
                     //define total number of results you want per page  
@@ -151,45 +151,44 @@ require('utilities/functions.php');
                 
                     //determine the sql LIMIT starting number for the results on the displaying page  
                     (int)$page_first_result = ((int)$page-1) * (int)$results_per_page;  
+
+                    //concatentate the page limit to the query
                     $sql .= " LIMIT " .$page_first_result. ',' .$results_per_page. ';';
                 
+                    //return the updated query
                     $resultFilter = mysqli_query($connection, $sql);
-                    echo $sql; 
-                    echo "<br><br>";
-                    echo "count:" .mysqli_num_rows($resultFilter);
+
+                    //to display the query uncomment the following:
+                        // echo $sql; 
+                        // echo "<br><br>";
+                        // echo "count:" .mysqli_num_rows($resultFilter);
 
                     //display the retrieved result on the webpage  
                     if ($resultFilter != NULL) {
                         while ($row = mysqli_fetch_array($resultFilter)) {
+                            //output will store all the html requreied to make all the cards inorder to echo out later
                             $output =createCard($row);
-                            // print_r($row);
                         }    
                     }
                     
+                    //display all the content cards 
                     echo $output;
                     
+                    //display the pagenumbers - created via a function
                     paging($page, $number_of_page, $page);
 
                     ?> 
-                    <!--  -->
-                    <?php
-                    ?>
                 </div>
             </div>
         </div>
-        <?php
-            
-        ?>
     </div>
-
 </section>
+<!-- end the filters and content cards -->
 
 
 <?php 
 //page footer for bootstrap and copyright
 require('utilities/footer.php');
 ?>
-
-    <!-- $sql .= "LIMIT " .$page_first_result. ',' .$results_per_page; -->
 
     
