@@ -69,7 +69,6 @@ if( isset($_GET['action']) || isset($_GET['action2'])) {
     $resultFilter = mysqli_query($connection, $sql);
     // echo $sql; 
     echo "count:" .mysqli_num_rows($resultFilter);
-    
 
     if ($resultFilter != NULL) {
         if (mysqli_num_rows($resultFilter)>0) {

@@ -57,6 +57,7 @@ require('utilities/functions.php');
                       $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
                       $results = mysqli_query($connection, $sql);
                       if ($results != NULL) {
+                        echo $_SESSION['favart'];
                         while ($row = mysqli_fetch_array($results)) {
                             $output =createCard($row);
                             // print_r($row);

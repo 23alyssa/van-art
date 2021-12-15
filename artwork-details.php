@@ -55,7 +55,7 @@ $sqlComment ="";
 $comment_active ="tab-pane fade";
 $location_active ="tab-pane fade in show active";
 
-if (!empty($_POST['post'])) {
+// if (!empty($_POST['post'])) {
         
     // get and initialize the varables from the form once submitted
     if( isset($_POST['comment'])) {
@@ -66,7 +66,7 @@ if (!empty($_POST['post'])) {
 
     } 
   
-}
+// }
 
     $artIDpass = $_GET['RegistryID'];
 
@@ -110,38 +110,12 @@ if (!empty($_POST['post'])) {
                     <li>Site Address: <?php echo $detailsOpts['SiteAddress'];?></li>
                     <li>Primary Material: <?php echo $detailsOpts['PrimaryMaterial'];?></li>
                 </ul>
-                <form method="post" action="favorites.php">
-                <button type="submit" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
+                <!-- <form method="post" action="favorites.php">
+                <button type="submit" name="fav" id="<?//= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
                     <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
-                </button>
+                </button> -->
 
                 <?php 
-            //     $name = $_SESSION['username'];
-            //     $sql = "SELECT user_id FROM member WHERE username='$name'";
-            //     $result = $connection ->query($sql);
-            //     $row = mysqli_fetch_assoc($result);
-            //     $user_id = $row['user_id'];
-            //     $art_id = $detailsOpts['RegistryID'];
-            //     // echo $user_id. " and " . $art_id;
-            //     $errors = [];
-
-            //     $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
-            //     if (is_post_request()) {
-            //         $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
-            //         $existing_res = mysqli_query($connection, $existing_query);
-
-            //         // If the count is not 0, that means already in favorites
-            //         if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
-            //         array_push($errors, 'already added to favorites');
-            //         echo "Already in Favorites";
-            //         } else {
-            //         if ($connection->query($insertsql) === TRUE) {
-            //             echo "data inserted";
-            //             } else {
-            //             echo "failed";
-            //             }
-            //     }
-            // }
                 
                 
                 // if (is_post_request()) {
@@ -163,16 +137,62 @@ if (!empty($_POST['post'])) {
                     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$registryID."'";
                     $existing_res = mysqli_query($connection, $existing_query);
 
+
                     // If the count is not 0, that means already in favorites
                     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
-                    echo "Added to Favorites";
-                    } 
+                    // echo "Added to Favorites";
+                    echo '<form method="post" action="unfavorite.php">';
+                    echo '<button type="submit" name="fav" id="';
+                    echo $detailsOpts['RegistryID'];
+                    echo '" class="btn btn-outline-primary">';
+                    echo '<i class="bi bi-bookmark-plus-fill card-link"></i> Unfavourite </button></form>';
+                    } else {
+                        echo '<form method="post" action="favorites.php">';
+                        echo '<button type="submit" name="fav" id="';
+                        echo $detailsOpts['RegistryID'];
+                        echo '" class="btn btn-outline-primary">';
+                        echo '<i class="bi bi-bookmark-plus-fill card-link"></i> favourite </button></form>';
+                    }
                 
                 // }
                 ?>
-                </form>
+                <!-- </form>
 
-                <form action="upvote.php" method="post" class="mt-auto">
+                <form method="post" action="unfavorite.php">
+                <button type="submit" name="fav" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-primary">
+                    <i class="bi bi-bookmark-plus-fill card-link"></i> Unfavourite
+                </button>
+                </form> -->
+                    <?php
+                        // $upvotesql = "SELECT COUNT(*) as count FROM upvote WHERE art_id='".$registryID."'";
+                        // $existing_upvote = mysqli_query($connection, $upvotesql);
+                        
+                        // $numvotes = mysqli_fetch_assoc($existing_upvote)['count'];
+                        // echo '<form action="upvote.php" method="post" class="mt-auto">';
+                        // echo '<button type="submit" name="vote" id="';
+                        // echo $detailsOpts['RegistryID'];
+                        // echo '" class="btn btn-outline-dark">';
+                        // echo '<i class="far fa-arrow-alt-circle-up card-link"></i>';
+                        // if ($numvotes == 1) {
+                        //     echo $numvotes." Upvote";
+                        // } else {
+                        //     echo $numvotes. " Upvotes";
+                        // }
+                        // echo '</button></form>';
+                    ?>
+                    <?php 
+                        $ip_address = get_ip();
+                        $existing_query = "SELECT COUNT(*) as count FROM upvote WHERE IP_address = '".$ip_address."' AND art_id = '".$registryID."'";
+                        $existing_res = mysqli_query($connection, $existing_query);
+                
+                        // If the count is not 0, that means already in favorites
+                        if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+                            echo '<form action="unupvote.php" method="post" class="mt-auto">';
+                        } else {
+                            echo '<form action="upvote.php" method="post" class="mt-auto">';
+                        }
+                    ?>
+                <!-- <form action="upvote.php" method="post" class="mt-auto"> -->
                     <button type="submit" name="vote" id="<?= $detailsOpts['RegistryID']; ?>" class="btn btn-outline-dark">
                         <i class="far fa-arrow-alt-circle-up card-link"></i> 
                     

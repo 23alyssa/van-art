@@ -3,6 +3,8 @@
 
 // <!-- browse.php - functions -->
 
+
+
 // this function opens the tag for the form
 function form_start() {
     echo "<div>";
@@ -116,11 +118,28 @@ function form_end() {
                     ?>
                     <div>
                         <a <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> class="card-link">Read More</a>
-                        <form action="browse.php" method="post" class="mt-auto">
-                        <button type="button" name="fav" id="<?= $row[2] ?>" class="btn btn-outline-primary">
-                            <i class="bi bi-bookmark-plus-fill card-link"></i> Favourite
-                        </button>
-                        </form>
+                        <?php
+                        // if ($art != 0) {
+                            // $_SESSION['favart'] = $row[0];
+                            // echo $art;
+                            // echo '<form action="" method="post" class="mt-auto">';
+                            // echo '<button type="submit" name="fav" id=" $row[2] "" class="btn btn-outline-primary">';
+                        //     echo '<i class="bi bi-bookmark-plus-fill card-link"></i> Unfavourite';
+                        //     echo '</button></form>';
+
+                        //     require('utilities/db.php');
+                        //     $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+                        //     $name = $_SESSION['username'];
+
+                        //     $sql = "DELETE FROM favorite WHERE user_id = (SELECT user_id FROM member WHERE username='$name') AND art_id = '".$art."'";
+                        //     if ($connection->query($sql) ===  TRUE) {
+                        //         echo "Record Deleted successfully";
+                        //         // redirect_to("members.php");
+                        //     } else {
+                        //         echo "error deleting record";
+                        //     }
+                        // }
+                        ?>
                     </div>
                 <!-- </div> -->
             </div>
@@ -322,6 +341,23 @@ function form_end() {
         $result = $connection ->query($sql);
         $row = mysqli_fetch_assoc($result);
         return $row['user_id'];
+        }
+    }
+
+    function get_ip() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))   
+        {
+        return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        //whether ip is from proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))  
+        {
+        return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        //whether ip is from remote address
+        else
+        {
+        return $_SERVER['REMOTE_ADDR'];
         }
     }
 ?>
