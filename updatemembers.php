@@ -52,6 +52,10 @@ require('utilities/functions.php');
           echo "Error updating record: " . $connection->error;
       }
     }
+
+    $result = $connection ->query($sql);
+    $row = mysqli_fetch_assoc($result);
+    
   ?>
 
 <div id="content">
