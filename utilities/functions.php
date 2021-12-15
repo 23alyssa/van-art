@@ -1,7 +1,5 @@
 <?php
-// <!-- functions.php -->
-
-// <!-- browse.php - functions -->
+// this page contains all the funcitons used throughout the entire program 
 
 
 
@@ -77,7 +75,6 @@ function dropdown_option($text,$varname, $opt, $get, $id) {
 function form_end() {  
     echo "</div>";
 	echo "<div class=\"form-group mt-4\">"; 
-    // echo "<input class=\"btn btn-primary btn-lg\" type=\"submit\" name=\"submit-filter\" value=\"Filter Art\">";
     echo "</div></div></div>";
     // echo "</form>";
 }
@@ -85,7 +82,7 @@ function form_end() {
 ?>
 
 <?php function createCard(array $row) { ?>
-    <!-- <div class="col-4"> -->
+    <!-- this class is responsible for populating the card information from the public art database -->
 
         <div class="card col-sm-8 col-md-5 col-lg-4 col-xl-3 m-1">
         <a class="text-decoration-none" <?php echo "href=\"artwork-details.php?RegistryID=$row[0]\" "?> >

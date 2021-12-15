@@ -58,9 +58,6 @@ require('utilities/functions.php');
     $typeQuery = "SELECT DISTINCT public_art.Type FROM public_art  WHERE public_art.Type IS NOT NULL ORDER BY `Type`";
     $typeQueryResult = mysqli_query($connection, $typeQuery);
 
-    //make a new array to hold the value from the query to use in the form_dropdown function
-    // $type = array();
-
     //loop through the results and populate the new array to hold the values for dropdown
     if ($typeQueryResult != NULL) {
         while ($row = mysqli_fetch_assoc($typeQueryResult)) {
@@ -79,7 +76,7 @@ require('utilities/functions.php');
     $yearQuery = "SELECT DISTINCT public_art.YearOfInstallation FROM public_art ORDER BY `YearOfInstallation` DESC";
     $yearQueryResult = mysqli_query($connection, $yearQuery);
 
-    //make a new array to hold the value from the query to use in the form_dropdown function
+    //make a new variable to hold the value from the query to use in the form_dropdown function
     $year;
 
     //loop through the results and populate the new array to hold the values for dropdown

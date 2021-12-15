@@ -12500,6 +12500,10 @@ textarea.form-control-lg {
   background-color: #E7E3E2;
 }
 
+.bg-light-blue {
+  background-color: #FBF8F7;
+}
+
 .card {
   border: none;
 }
@@ -12532,6 +12536,10 @@ textarea.form-control-lg {
   height: 16vw;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.border-r {
+  border-radius: 25px;
 }
 
 .img-display-lg {

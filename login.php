@@ -56,11 +56,48 @@ if(is_post_request()) {
 
 <?php $page_title = 'Log in'; ?>
 <?php include('utilities/header.php'); ?>
+<?php echo display_errors($errors); ?>
 
 <div id="content">
+  <section class="">
+    <div class="container-fluid bg-light-blue">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-sm-6 text-black">
+
+          <div class="h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5 bg-alt border-r">
+
+            <form action="login.php" method="post" style="width: 23rem;">
+              <h3 class="fw-normal mb-3 pb- mt-5 pt-5" style="letter-spacing: 1px;">Login</h3>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="username">Username:</label>
+                <input type="text" name="username" value="" id="username" class="form-control form-control-lg" />
+              </div>
+
+              <div class="form-outline mb-4">
+                <label class="form-label" for="password">Password</label>
+                <input type="password" name="password" value="" id="password" class="form-control form-control-lg" />
+              </div>
+
+              <div class="pt-1 mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit" value="login">Login</button>
+              </div>
+
+              <p class="pb-5">Don't have an account? <a href="register.php" class="link-primary">Register here</a></p>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+<!-- <div id="content">
   <h1>Log in</h1>
 
-  <?php echo display_errors($errors); ?>
+  
 
   <form action="login.php" method="post">
     Username:<br />
@@ -70,6 +107,6 @@ if(is_post_request()) {
     <input type="submit" value="login"/>
   </form>
 
-</div>
+</div> -->
 
 <?php include('utilities/footer.php'); ?>
