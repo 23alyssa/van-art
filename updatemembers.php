@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 //header.php has information for bootstrap and page title
 require('utilities/header.php');
 
+// connect to database
 require('utilities/db.php');
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
@@ -24,38 +25,33 @@ require('utilities/functions.php');
 <?php $page_title = 'Member'; ?>
 
 <div id="content">
-  <!-- <h1>Update Data for <?php echo $_SESSION['username']?></h1> -->
 
   <?php 
+    echo $_SESSION['username'];
     $username = $_SESSION['username'];
+    // create query for getting information about the user
     $sql = "SELECT * FROM member WHERE username='$username'";
     
-
+    // if user clicks update button, updates the information from the account
     if (isset($_POST['update'])) { 
-        
-            $firstname = $_POST['newfirstname'];
-            $lastname = $_POST['newlastname'];
-            $email = $_POST['newemail'];
-            $updatesql = "UPDATE member SET 
-            first_name = '$firstname',
-            last_name = '$lastname',
-            email = '$email'
-            WHERE username='$username'";
-            if ($connection->query($updatesql) === TRUE) {
-                echo "Record updated successfully";
-                redirect_to('members.php');
-            } else {
-                echo "Error updating record: " . $connection->error;
-            }
-        
-        /*
-        mysqli_query($connection, "UPDATE member SET first_name='".$_POST['newfirstname']."',last_name='".$_POST['newlastname']."',email='".$_POST['newemail']."' WHERE username='$username'");
-        */
+      // create variables for all the input information
+      $firstname = $_POST['newfirstname'];
+      $lastname = $_POST['newlastname'];
+      $email = $_POST['newemail'];
+      // query to update member's information
+      $updatesql = "UPDATE member SET 
+      first_name = '$firstname',
+      last_name = '$lastname',
+      email = '$email'
+      WHERE username='$username'";
+      // update data in database, if successful redirects to members
+      if ($connection->query($updatesql) === TRUE) {
+          echo "Record updated successfully";
+          redirect_to('members.php');
+      } else {
+          echo "Error updating record: " . $connection->error;
+      }
     }
-
-    $result = $connection ->query($sql);
-    $row = mysqli_fetch_assoc($result);
-    
   ?>
 
 <div id="content">
@@ -99,21 +95,5 @@ require('utilities/functions.php');
     </div>
   </section>
 </div>
-
-<!-- 
-  <form action="" method="post">
-    
-    First Name:<br />
-    <input type="text" name="newfirstname" value="<?php //echo $row['first_name'] ?>" /><br />
-    Last Name:<br />
-    <input type="text" name="newlastname" value="<?php //echo $row['last_name'] ?>" /><br />
-    Email:<br />
-    <input type="text" name="newemail" value="<?php //echo $row['email'] ?>" /><br />
-    <input type="submit" name="update" value="update"/>
-  </form>
-  
-</div> -->
-
-
 
 <?php include('utilities/footer.php'); ?>

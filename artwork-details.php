@@ -116,7 +116,7 @@ $location_active ="tab-pane fade in show active";
                 </ul>
 
                 <?php 
-                    // check if the user is logged in and retrieve their information 
+                    // check if the user is logged in and retrieve their user_id information 
                     if (isset($_SESSION['username'])) {
                         $name = $_SESSION['username'];
                         $sql = "SELECT user_id FROM member WHERE username='$name'";
@@ -127,21 +127,21 @@ $location_active ="tab-pane fade in show active";
                         $user_id = "";
                     }
                     
-                    //adding to favourites query
-                    // $insertsql = "INSERT INTO favorite(user_id, art_id) VALUES ('$user_id', '$art_id')";
+                    //checks if the artwork is favorited by the member
                     $existing_query = "SELECT COUNT(*) as count FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$registryID."'";
                     $existing_res = mysqli_query($connection, $existing_query);
 
-                    //adding to favourites and displaying the favoruites information 
+                    //checks if the member have favorite the artwork and displays the corrospending favorite/unfavorite button for the artwork to interact with
                     // If the count is not 0, that means already in favorites
                     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
-                    // echo "Added to Favorites";
+                    // displays a button for members to unfavorite the artwork
                     echo '<form method="post" action="unfavorite.php">';
                     echo '<button type="submit" name="fav" id="';
                     echo $detailsOpts['RegistryID'];
                     echo '" class="btn btn-outline-primary">';
                     echo '<i class="bi bi-bookmark-plus-fill card-link"></i> Unfavourite </button></form>';
                     } else {
+                        // displays a button for members to favorite the artwork
                         echo '<form method="post" action="favorites.php">';
                         echo '<button type="submit" name="fav" id="';
                         echo $detailsOpts['RegistryID'];
@@ -149,17 +149,19 @@ $location_active ="tab-pane fade in show active";
                         echo '<i class="bi bi-bookmark-plus-fill card-link"></i> favourite </button></form>';
                     }
                
-                    //use ip adress to prevent samming the upvotes button from same device 
+                    //retrieve ip address
                     $ip_address = get_ip();
 
-                    //query for upvote
+                    //query for checking if the user have upvoted the artwork or not using ip address
                     $existing_query = "SELECT COUNT(*) as count FROM upvote WHERE IP_address = '".$ip_address."' AND art_id = '".$registryID."'";
                     $existing_res = mysqli_query($connection, $existing_query);
             
-                    // If the count is not 0, that means already in favorites
+                    // If the count is not 0, that means already upvoted
                     if(mysqli_fetch_assoc($existing_res)['count'] != 0) {
+                        // clicking upvote causes to unupvote
                         echo '<form action="unupvote.php" method="post" class="mt-auto">';
                     } else {
+                        // clicking upvote causes to upvote
                         echo '<form action="upvote.php" method="post" class="mt-auto">';
                     }
                 ?>

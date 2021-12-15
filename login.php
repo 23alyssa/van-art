@@ -5,25 +5,19 @@ ob_start(); // output buffering is turned on
 session_start(); // turn on sessions
 require_once('utilities/functions.php');
 
+// connect to database
 require('utilities/db.php');
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
+// set temp variables
 $errors = [];
 $username = '';
 $password = '';
 
-// TODO: This page should not show if a session is present.
-// Redirect to staff index if a session is detected.
-// if(isset($_SESSION['username'])) {redirect_to(url_for('van-art/browse.php'));}
-
-
-// END TODO
 if(is_post_request()) {
-  // TODO: Verify the password matches the record
-  // if it does not, throw an error message
-  // otherwise set the session and redirect to dashboard
+  // checks if the username and password is empty or not
   if(!empty($_POST['username']) && !empty($_POST['password'])) {
-    // Write a query to retrieve the hashed_password
+    // retrieve the password
     $user_query = "SELECT hashed_password FROM member WHERE username = '" . $_POST['username'] . "'";
     $user_res = mysqli_query($connection, $user_query);
 
@@ -97,21 +91,5 @@ if(is_post_request()) {
     </div>
   </section>
 </div>
-
-
-<!-- <div id="content">
-  <h1>Log in</h1>
-
-  
-
-  <form action="login.php" method="post">
-    Username:<br />
-    <input type="text" name="username" value="" /><br />
-    Password:<br />
-    <input type="password" name="password" value="" /><br />
-    <input type="submit" value="login"/>
-  </form>
-
-</div> -->
 
 <?php include('utilities/footer.php'); ?>

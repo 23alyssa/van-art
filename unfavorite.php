@@ -1,21 +1,19 @@
 <?php
 require('utilities/functions.php');
-// Import the db configuration file here and create a connection to the DB
+// connect to database
 require('utilities/db.php');
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 session_start(); // turn on sessions
 	 if (is_post_request()) {
+         // redirect if not logged in
         if (!isset($_SESSION['username'])) {
             redirect_to("login.php");
         } else {
+            // create variables for sessions
             $name = $_SESSION['username'];
-            // $sql = "SELECT user_id FROM member WHERE username='$name'";
-            // $result = $connection ->query($sql);
-            // $row = mysqli_fetch_assoc($result);
-            // $user_id = $row['user_id'];
             $art_id = $_SESSION['art'];
 
-            // $sql = "DELETE FROM favorite WHERE user_id = '".$user_id."' AND art_id = '".$art_id."'";
+            // delete favorite artwork from user
             $sql = "DELETE FROM favorite WHERE user_id = (SELECT user_id FROM member WHERE username='$name') AND art_id = '".$art_id."'";
             if ($connection->query($sql) ===  TRUE) {
                 echo "Record Deleted successfully";
@@ -25,5 +23,6 @@ session_start(); // turn on sessions
             }
         }
     }
+    // unset the art session variable
     unset($_SESSION['art']);
 ?>

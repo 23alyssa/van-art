@@ -297,45 +297,53 @@ function form_end() {
 
 <?php 
     // Derek's function code
+    // checks if the user is logged in or not
     function is_logged_in() {
         if(!isset($_SESSION['username'])) {redirect_to(url_for('/login.php'));}
     }
 
+    // redirect url from previous path
     function url_for($script_path) {
-        // add the leading '/' if not present
         if($script_path[0] != '/') {
         $script_path = "/" . $script_path;
         }
         return WWW_ROOT . $script_path;
     }
 
+    // gets rid of the special characters
     function h($string="") {
         return htmlspecialchars($string);
     }
 
+    // displays the error
     function error_404() {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
         exit();
     }
     
+    // displays the error
     function error_500() {
         header($_SERVER["SERVER_PROTOCOL"] . " 500 Internal Server Error");
         exit();
     }
     
+    // redirect your file to $location
     function redirect_to($location) {
         header("Location: " . $location);
         exit;
     }
     
+    // makes a post request
     function is_post_request() {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
     
+    // makes a get request
     function is_get_request() {
         return $_SERVER['REQUEST_METHOD'] == 'GET';
     }
     
+    // displays what errors occured
     function display_errors($errors=array()) {
         $output = '';
         if(!empty($errors)) {
@@ -351,6 +359,7 @@ function form_end() {
         return $output;
     }
 
+    // takes the session username and retrieves the user_id from the session's username
     function get_user_id($connection) {
         if (!isset($_SESSION['username'])) {
             redirect_to("login.php");
@@ -363,6 +372,7 @@ function form_end() {
         }
     }
 
+    // retrieves the ip address
     function get_ip() {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))   
         {
@@ -390,17 +400,44 @@ function make_query($connect) {
  return $result;
 }
 
-function carousel(){
+function carousel($connection){
     ?>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
                         <img class="d-block carousel-size" src="assets/mural.jpg" data-src="holder.js/900x400?theme=social" alt="First slide">
                     </div>
-                    <div class="carousel-item">
-                        <img class="d-block carousel-size" src="assets/mural.jpg" data-src="holder.js/900x400?theme=industrial" alt="Second slide">
-                    </div>
+                    <?php 
+                        // retrieve art_id from the upvote table of whatever artwork that is upvoted
+                        $carouselsql = "SELECT art_id FROM upvote";
+                        $result = $connection -> query($carouselsql);
+                        $row = mysqli_fetch_assoc($result);
+
+                        // display the art_id if there are still results
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            // retrieves the PhotoURL from the public art table using the art_id
+                            $picsql = "SELECT PhotoURL FROM public_art WHERE RegistryID = '".$row['art_id']."'";
+                            $picresult = $connection -> query($picsql);
+
+                            // display a carousel item with the photoURL results
+                            echo '<div class="carousel-item">';
+                            echo '<img class="d-block carousel-size" src="';
+                            if ($picresult->num_rows>0) {
+                                while($picrow = $picresult->fetch_assoc()) {
+                                    // checks if there is a photoURL, if not do not post.
+                                    if ($picrow['PhotoURL'] != "") {
+                                        echo $picrow['PhotoURL'];
+                                    }
+                                    
+                                }
+                            }
+                            echo '" data-src="holder.js/900x400?"></div>';
+                        }
+
+                        
+                    ?>
             </div>
+            <!-- display the directional arrows to navigate the left and right pictures -->
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
@@ -412,38 +449,6 @@ function carousel(){
         </div>
     <?php
 }
-
-function make_slide_indicators($connect) {
-    $output = ''; 
-    $count = 0;
-    $result = make_query($connect);
-    while($row = mysqli_fetch_array($result)) {
-        if($count == 0) {
-             $output .= '<li data-target="#dynamic_slide_show" data-slide-to="'.$count.'" class="active"></li>';
-        } else {
-            $output .= ' <li data-target="#dynamic_slide_show" data-slide-to="'.$count.'"></li>';
-        }
-        $count = $count + 1;
-    }
-    return $output;
-}
-
-function make_slides($connect) {
-    $output = '';
-    $count = 0;
-    $result = make_query($connect);
-    while($row = mysqli_fetch_array($result)) {
-        if($count == 0) {
-            $output .= '<div class="item active">';
-        } else {
-            $output .= '<div class="item">';
-        }
-        $output .= '<img src='.$row["PhotoURL"].' alt='.$row["Neighbourhood"].' /> <div class="carousel-caption"><h3>'.$row["Neighbourhood"].'</h3></div></div>';
-        $count = $count + 1;
-    }
- return $output;
-}
-
 
 
 ?>

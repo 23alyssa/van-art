@@ -34,6 +34,7 @@ require('utilities/functions.php');
                             <!-- form to detect the edit information button -->
                             <form action="updatemembers.php" method="post">
                                 <?php 
+                                    // takes the session's username and fetches the account information
                                     $username = $_SESSION['username'];
                                     $sql = "SELECT * FROM member WHERE username='$username'";
                                     $result = $connection ->query($sql);
@@ -54,16 +55,17 @@ require('utilities/functions.php');
                             <?php
                                 //display the favourites information from the database
                                 $user = $row['user_id'];
+                                // reorganize in descending order of which artwork is last favorited by member
                                 $favsql = "SELECT art_id FROM favorite WHERE user_id = '$user' ORDER BY timestamp DESC";
                                 $favresults = $connection -> query($favsql);
+                                // if there is data on favorites for this member using user_id then display results
                                 while ($favrow = $favresults -> fetch_array(MYSQLI_ASSOC)) {
                                     $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
                                     $results = mysqli_query($connection, $sql);
                                     if ($results != NULL) {
-                                        // echo $_SESSION['favart'];
+                                        // display the artwork in card form
                                         while ($row = mysqli_fetch_array($results)) {
                                             $output =createCard($row);
-                                            // print_r($row);
                                         }    
                                     }
                                 }
@@ -75,59 +77,5 @@ require('utilities/functions.php');
         </div>
     </section>
 </div>
-
-<!-- <div id="content">
-  <h1>Hello <?php //echo $_SESSION['username']?></h1>
-
-  <form action="updatemembers.php" method="post">
-  <?php 
-//   $username = $_SESSION['username'];
-//   $sql = "SELECT * FROM member WHERE username='$username'";
-//   $result = $connection ->query($sql);
-//   $row = mysqli_fetch_assoc($result);
-//   echo "First Name: ". $row['first_name']."<br>";
-//   echo "Last Name: ". $row['last_name']."<br>";
-//   echo "Email: ". $row['email'];
-  ?>
-  <br>
-  <input type="submit" value="Edit Information"/>
-  </form>
-  <h1> Favorites </h1>
-</div> -->
-
-<!-- <section class="container-fluid bg-alt">
-    <div class="container">
-        <div class="row pt-5">
-            <div class="col-9"> 
-                <div class="row" id="result">
-                    <h3 class="text-center" id="textChange">Favorites</h3>
-                    <?php
-                    
-                    // $user = $row['user_id'];
-                    // $favsql = "SELECT art_id FROM favorite WHERE user_id = '$user' ORDER BY timestamp DESC";
-                    // $favresults = $connection -> query($favsql);
-                    // while ($favrow = $favresults -> fetch_array(MYSQLI_ASSOC)) {
-                    //   $sql = "SELECT public_art.RegistryID, public_art.PhotoURL, public_art.YearOfInstallation, public_art.Type, public_art.Neighbourhood, SUBSTRING(public_art.DescriptionOfwork,1,70) FROM public_art WHERE RegistryID = '".$favrow['art_id']."'";
-                    //   $results = mysqli_query($connection, $sql);
-                    //   if ($results != NULL) {
-                    //     // echo $_SESSION['favart'];
-                    //     while ($row = mysqli_fetch_array($results)) {
-                    //         $output =createCard($row);
-                    //         // print_r($row);
-                    //     }    
-                    // }
-                    // }
-
-                    ?>
-                </div>
-            </div>
-        </div>
-        <?php
-            
-        ?>
-    </div>
-
-</section> -->
-
 
 <?php include('utilities/footer.php'); ?>
