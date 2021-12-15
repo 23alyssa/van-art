@@ -65,10 +65,29 @@ $location_active ="tab-pane fade in show active";
         $location_active ="tab-pane fade";
 
     } 
+
+    if( isset($_POST['comment-update'])) {
+        $comment_update=($_POST['comment-update']); 
+        $comment_active = "tab-pane fade in show active";
+        $location_active ="tab-pane fade";
+    }
   
 // }
 
     $artIDpass = $_GET['RegistryID'];
+
+    if (isset($_GET['id'])) {
+        $comment_id_edit = $_GET['id'];
+        $comment_active = "tab-pane fade in show active";
+        $location_active ="tab-pane fade";
+    } 
+
+    if (isset($_GET['id-delete'])) {
+        $comment_id_delete = $_GET['id-delete'];
+        
+        $comment_active = "tab-pane fade in show active";
+        $location_active ="tab-pane fade";
+    } 
 
     // read database 
     $detailsQuery = "SELECT public_art.RegistryID, public_art.ArtistProjectStatement, public_art.Type, public_art.Status, public_art.SiteAddress, public_art.PrimaryMaterial, public_art.PhotoURL, public_art.Neighbourhood, public_art.LocationOnsite, public_art.Geom, public_art.DescriptionOfwork, public_art.Artists, public_art.PhotoCredits, public_art.YearOfInstallation, artists.FirstName, artists.LastName FROM `public_art` INNER JOIN artists ON public_art.Artists=artists.ArtistID 
@@ -364,12 +383,39 @@ $location_active ="tab-pane fade in show active";
                                     . mysqli_error($connection);
                             }
                         } 
+
+                        if( isset($_POST['comment-update'])) {
+                            $sqlCommentUpdate = "UPDATE comment
+                            SET message = \" ".$_POST['comment-update']." \"
+                            WHERE comment_id =". $comment_id_edit.";" ;
+
+                            if(mysqli_query($connection, $sqlCommentUpdate)){
+                                echo "<p>Succesfully updated</p>"; 
+                            } else {
+                                echo "Opps there was an erorr: . " 
+                                    . mysqli_error($connection);
+                            }
+
+                        }
                     }
+
+                    // if( isset($_GET['id-delete'])) {
+                    //     $sqlCommentDelete = "DELETE FROM comment
+                    //     WHERE comment_id = ".$comment_id_delete.";" ;
+
+                    //     if(mysqli_query($connection, $sqlCommentDelete)){
+                    //         echo "<p>Succesfully deleted</p>"; 
+                    //     } else {
+                    //         echo "Opps there was an erorr: . " 
+                    //             . mysqli_error($connection);
+                    //     }
+
+                    // }
                 
                     
 
                     //read and format all the comments
-                    $sqlReadComment = "SELECT comment.user_id, comment.art_id, comment.message, comment.timestamp, member.username FROM `comment` INNER JOIN member ON member.user_id=comment.user_id WHERE art_id = $registryID ORDER BY comment.timestamp DESC;";
+                    $sqlReadComment = "SELECT comment.user_id, comment.art_id, comment.message, comment.timestamp, member.username, comment.comment_id FROM `comment` INNER JOIN member ON member.user_id=comment.user_id WHERE art_id = $registryID ORDER BY comment.timestamp DESC;";
 
                     $resultReadComment = mysqli_query($connection, $sqlReadComment);
         
@@ -377,7 +423,16 @@ $location_active ="tab-pane fade in show active";
                     //display the retrieved result on the webpage  
                     if (mysqli_num_rows($resultReadComment) > 0) {
                         while ($row = mysqli_fetch_array($resultReadComment)) {
-                            comment_display($row['timestamp'], $row['username'], $row['message'], $user_id, $row['user_id']);
+                            if (isset($_GET['id-delete']) && $_GET['id-delete'] == $row['comment_id']) {
+                                comment_delete($connection, 'id-delete', $comment_id_delete, $user_id, $row['user_id']);
+                            } 
+                            
+                            comment_display($row['timestamp'], $row['username'], $row['message'], $user_id, $row['user_id'], $row['comment_id'], $row['art_id']);
+
+                            if (isset($_GET['id']) && $_GET['id'] == $row['comment_id']) {
+                                comment_edit($registryID, $comment_id_edit, $user_id, $row['user_id']);
+                            }
+
                             // echo "<pre>";
                             // print_r($row);
                             // echo "</pre>";

@@ -240,7 +240,7 @@ function form_end() {
 
 <?php 
 
-    function comment_display($time, $name, $message, $user, $user_id){
+    function comment_display($time, $name, $message, $user, $user_id, $comment_id, $art_id){
         ?>
         <li class="media list-group-item mb-0
         
@@ -265,13 +265,61 @@ function form_end() {
                 <p><?php echo $message; ?></p>
                 <?php 
                     if ($user == $user_id){
-                        echo "<p class=\"text-secondary\">Edit</p>";
-                    }
+                        echo "<a class=\"pull-right m-1 ml-1\" href=\"artwork-details.php?RegistryID=$art_id&id-delete=$comment_id\">Delete</a>";
+                        echo "<a class=\"pull-right m-1\" href=\"artwork-details.php?RegistryID=$art_id&id=$comment_id\">Edit</a>";
+                     }
                         
                 ?>
             </div>
         </li>
         <?php
+    }
+?>
+
+<?php 
+
+    function comment_edit($registryID, $comment_id, $user, $user_id){
+        if ($user == $user_id){
+        ?>
+        <li class="media list-group-item mb-0
+        <?php 
+            if ($user == $user_id){
+                echo "bg-primary";
+            }     
+        ?>
+        ">
+            <div class="media-body">
+            <form action="artwork-details.php?RegistryID=<?php echo $registryID ?>&id=<?php echo $comment_id ?>" method="post">
+                        <textarea class="form-control" name="comment-update" type="text" placeholder="Write a comment..." rows="3"></textarea>
+                        <br>
+                        <a class="text-dark m-1" href="artwork-details.php?RegistryID=<?php echo $registryID ?>">Close</a>
+                        <input type="submit" name="update" value="update" class="btn btn-light pull-right">
+                    </form>
+            </div>
+        </li>
+        <?php
+        }
+    }
+?>
+
+<?php 
+
+    function comment_delete($connection, $idvalue, $comment_id_delete, $user, $user_id){
+        if ($user == $user_id){
+            if( isset($_GET[$idvalue])) {
+                $sqlCommentDelete = "DELETE FROM comment
+                WHERE comment_id = ".$comment_id_delete.";" ;
+
+                if(mysqli_query($connection, $sqlCommentDelete)){
+                    echo "<p>Succesfully deleted</p>"; 
+                } else {
+                    echo "Opps there was an erorr: . " 
+                        . mysqli_error($connection);
+                }
+
+            }
+            header("Refresh:0");
+        }
     }
 ?>
 
