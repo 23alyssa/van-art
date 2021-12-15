@@ -219,7 +219,7 @@ $location_active ="tab-pane fade in show active";
             <!-- GOOGLE MAPS INFORMATION -->
             <div id="location" class="<?php echo $location_active ?>">
                 <h3 class="mt-5">Map</h3>
-                <?php echo $detailsOpts['Geom'];?>
+                
                 
                 <?php 
                     // seperate the format of geom as used in database to get individual latitude and longitude
