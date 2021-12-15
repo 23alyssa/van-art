@@ -56,9 +56,10 @@ if(is_post_request()) {
 
 <?php $page_title = 'Log in'; ?>
 <?php include('utilities/header.php'); ?>
-<?php echo display_errors($errors); ?>
+
 
 <div id="content">
+<?php echo display_errors($errors); ?>
   <section class="">
     <div class="container-fluid bg-light-blue">
       <div class="row d-flex justify-content-center align-items-center">

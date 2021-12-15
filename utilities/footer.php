@@ -10,9 +10,7 @@
           <h5 class="text-uppercase">Vancouver Public Art</h5>
 
           <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-            molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae
-            aliquam voluptatem veniam, est atque cumque eum delectus sint!
+          Vancouver Public Art is an index of artwork available publically in Vancouver with addition information to learn more about the installations and where they are. Because oftentimes public art can be a hidden surprise, but sometimes difficult to find when you want to.
           </p>
         </div>
         <!--Grid column-->
@@ -29,16 +27,16 @@
 
           <ul class="list-unstyled">
             <li>
-              <a href="#!" class="text-white">Home</a>
+              <a href="index.php" class="text-white">Home</a>
             </li>
             <li>
-              <a href="#!" class="text-white">Browse</a>
+              <a href="browse.php" class="text-white">Browse</a>
             </li>
             <li>
-              <a href="#!" class="text-white">Login</a>
+              <a href="login.php" class="text-white">Login</a>
             </li>
             <li>
-              <a href="#!" class="text-white">Sign up</a>
+              <a href="register.php" class="text-white">Sign up</a>
             </li>
           </ul>
         </div>
@@ -61,9 +59,6 @@
 
  <!-- Bootstrap and Masonry -->
  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
-
-
- <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
