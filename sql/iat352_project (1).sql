@@ -2,8 +2,8 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 22, 2021 at 12:27 AM
+-- Host: localhost
+-- Generation Time: Dec 15, 2021 at 09:17 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -621,6 +621,19 @@ CREATE TABLE `comment` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`comment_id`, `message`, `timestamp`, `art_id`, `user_id`) VALUES
+(2, 'this is a comment', '2021-12-14 07:15:19', 1, 7),
+(7, 'this is another comment from alyssa', '2021-12-14 08:05:21', 1, 6),
+(10, 'and from alyssa again', '2021-12-14 08:07:41', 1, 6),
+(11, 'hey this is a comment', '2021-12-14 08:57:36', 1, 6),
+(12, 'hello world!', '2021-12-14 19:58:16', 16, 6),
+(18, 'hello here is another comment yaya', '2021-12-14 23:11:06', 1, 7),
+(21, 'heloooooo', '2021-12-15 00:41:43', 1, 7);
+
 -- --------------------------------------------------------
 
 --
@@ -630,8 +643,19 @@ CREATE TABLE `comment` (
 CREATE TABLE `favorite` (
   `user_id` int(11) NOT NULL,
   `art_id` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `fav_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `favorite`
+--
+
+INSERT INTO `favorite` (`user_id`, `art_id`, `timestamp`, `fav_id`) VALUES
+(6, 1, '2021-12-14 08:04:54', 2),
+(6, 16, '2021-12-14 19:50:54', 3),
+(7, 1, '2021-12-15 00:47:49', 6),
+(7, 7, '2021-12-15 00:48:47', 7);
 
 -- --------------------------------------------------------
 
@@ -666,9 +690,19 @@ CREATE TABLE `member` (
   `last_name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `hash_password` varchar(50) NOT NULL,
+  `hashed_password` varchar(256) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `member`
+--
+
+INSERT INTO `member` (`first_name`, `last_name`, `email`, `username`, `hashed_password`, `user_id`) VALUES
+('Alyssa', 'Lalani', '23alyssa23@gmail.com', 'alyssa', '$2y$10$QsqG35NVR5X77xPSR11lM.lCA9bCfiUhRh9mms7vBuXP11CcJ1Ebe', 6),
+('Aly', 'Lalani', '23alyssa23@gmail.com', 'asl', '$2y$10$3ekLO.jOMjGnRPS0lbMmGOCkPnLXt/wdyUnwcUWGHi1BAT01E5Ywm', 7),
+('Alyssa', 'Lalani', '23alyssa23@gmail.com', 'asl2', '$2y$10$ivTya5fn4WX3gQVFIWJ0.ODUc..U4h3IgkYCQDwFBMkBPyKn5PnFW', 8),
+('Alyssa', 'Lalani', '23alyssa23@gmail.com', 'asl3', '$2y$10$CHphslasHf5f6Qig6XxZVenB9G/57TWgWZ9URKgiAyTA/3Au3h7mS', 9);
 
 -- --------------------------------------------------------
 
@@ -1401,13 +1435,22 @@ CREATE TABLE `tour` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `upvote`
 --
 
-CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL,
-  `IP_address` varchar(20) NOT NULL
+CREATE TABLE `upvote` (
+  `user` int(11) NOT NULL,
+  `IP_address` varchar(20) NOT NULL,
+  `art_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `upvote`
+--
+
+INSERT INTO `upvote` (`user`, `IP_address`, `art_id`) VALUES
+(1, '::1', 16),
+(8, '::1', 1);
 
 --
 -- Indexes for dumped tables
@@ -1431,6 +1474,7 @@ ALTER TABLE `comment`
 -- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
+  ADD PRIMARY KEY (`fav_id`),
   ADD KEY `favorite_member` (`user_id`),
   ADD KEY `favorite_art` (`art_id`);
 
@@ -1452,8 +1496,7 @@ ALTER TABLE `make`
 -- Indexes for table `member`
 --
 ALTER TABLE `member`
-  ADD PRIMARY KEY (`email`),
-  ADD KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- Indexes for table `public_art`
@@ -1475,10 +1518,11 @@ ALTER TABLE `tour`
   ADD PRIMARY KEY (`tour_id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `upvote`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`);
+ALTER TABLE `upvote`
+  ADD PRIMARY KEY (`user`),
+  ADD KEY `art_id` (`art_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1488,7 +1532,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `favorite`
+--
+ALTER TABLE `favorite`
+  MODIFY `fav_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `member`
+--
+ALTER TABLE `member`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tour`
@@ -1497,10 +1553,10 @@ ALTER TABLE `tour`
   MODIFY `tour_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `upvote`
 --
-ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `upvote`
+  MODIFY `user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -1535,17 +1591,17 @@ ALTER TABLE `make`
   ADD CONSTRAINT `make_artist` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`ArtistID`);
 
 --
--- Constraints for table `member`
---
-ALTER TABLE `member`
-  ADD CONSTRAINT `users` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
-
---
 -- Constraints for table `request`
 --
 ALTER TABLE `request`
   ADD CONSTRAINT `request_member` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`),
   ADD CONSTRAINT `request_tours` FOREIGN KEY (`tour_id`) REFERENCES `tour` (`tour_id`);
+
+--
+-- Constraints for table `upvote`
+--
+ALTER TABLE `upvote`
+  ADD CONSTRAINT `upvote_art` FOREIGN KEY (`art_id`) REFERENCES `public_art` (`RegistryID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
